@@ -9,27 +9,22 @@ export default function() {
     {
       title: "재고 추가",
       htmlBefore: '<i class="material-icons">add</i>',
-      to: "/blog-posts",
+      to: "/stock/add",
     },
-    // {
-    //   title: "Add New Post",
-    //   htmlBefore: '<i class="material-icons">note_add</i>',
-    //   to: "/add-new-post",
-    // },
-    // {
-    //   title: "Forms & Components",
-    //   htmlBefore: '<i class="material-icons">view_module</i>',
-    //   to: "/components-overview",
-    // },
-    // {
-    //   title: "Tables",
-    //   htmlBefore: '<i class="material-icons">table_chart</i>',
-    //   to: "/tables",
-    // },
     {
-      title: "User Profile",
-      htmlBefore: '<i class="material-icons">person</i>',
-      to: "/user-profile-lite",
+      title: "재고 사용",
+      htmlBefore: '<i class="material-icons">remove</i>',
+      to: "/stock/use",
+    },
+    {
+      title: "제품 목록",
+      htmlBefore: '<i class="material-icons">local_shipping</i>',
+      to: "/product",
+    },
+    {
+      title: "제조사 목록",
+      htmlBefore: '<i class="material-icons">local_shipping</i>',
+      to: "/manufacturer",
     },
     // {
     //   title: "Errors",

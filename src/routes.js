@@ -5,13 +5,16 @@ import { Redirect } from "react-router-dom";
 import { DefaultLayout } from "./layouts";
 
 // Route Views
-import BlogOverview from "./views/BlogOverview";
-import UserProfileLite from "./views/UserProfileLite";
-import AddNewPost from "./views/AddNewPost";
-import Errors from "./views/Errors";
-import ComponentsOverview from "./views/ComponentsOverview";
-import Tables from "./views/Tables";
-import BlogPosts from "./views/BlogPosts";
+import BlogOverviewPage from "./views/BlogOverviewPage";
+import AddStock from "./views/AddStock";
+import UseStock from "./views/UseStock";
+import ProductListPage from "./views/ProductListPage";
+import ManufacturerListPage from "./views/ManufacturerListPage";
+
+import AddProductPage from "./views/AddProductPage";
+import AddManufacturerPage from "./views/AddManufacturerPage";
+
+// import Errors from "./views/Errors";
 
 export default [
   {
@@ -23,36 +26,43 @@ export default [
   {
     path: "/overview",
     layout: DefaultLayout,
-    component: BlogOverview
+    component: BlogOverviewPage
   },
   {
-    path: "/user-profile-lite",
+    path: "/stock/add",
     layout: DefaultLayout,
-    component: UserProfileLite
+    component: AddStock
   },
-  // {
-  //   path: "/add-new-post",
-  //   layout: DefaultLayout,
-  //   component: AddNewPost
-  // },
+  {
+    path: "/stock/use",
+    layout: DefaultLayout,
+    component: UseStock
+  },
+  {
+    path: "/product",
+    exact: true,
+    layout: DefaultLayout,
+    component: ProductListPage
+  },
+  {
+    path: "/product/add",
+    layout: DefaultLayout,
+    component: AddProductPage
+  },
+  {
+    path: "/manufacturer",
+    exact: true,
+    layout: DefaultLayout,
+    component: ManufacturerListPage
+  },
+  {
+    path: "/manufacturer/add",
+    layout: DefaultLayout,
+    component: AddManufacturerPage
+  },
   // {
   //   path: "/errors",
   //   layout: DefaultLayout,
   //   component: Errors
   // },
-  // {
-  //   path: "/components-overview",
-  //   layout: DefaultLayout,
-  //   component: ComponentsOverview
-  // },
-  // {
-  //   path: "/tables",
-  //   layout: DefaultLayout,
-  //   component: Tables
-  // },
-  // {
-  //   path: "/blog-posts",
-  //   layout: DefaultLayout,
-  //   component: BlogPosts
-  // }
 ];

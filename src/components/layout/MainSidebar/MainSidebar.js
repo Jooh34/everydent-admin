@@ -7,6 +7,7 @@ import SidebarMainNavbar from "./SidebarMainNavbar";
 import SidebarSearch from "./SidebarSearch";
 import SidebarNavItems from "./SidebarNavItems";
 
+import getSidebarNavItems from "../../../data/sidebar-nav-items";
 import { Store } from "../../../flux";
 
 class MainSidebar extends React.Component {
@@ -15,7 +16,7 @@ class MainSidebar extends React.Component {
 
     this.state = {
       menuVisible: false,
-      sidebarNavItems: Store.getSidebarItems()
+      sidebarNavItems: getSidebarNavItems()
     };
 
     this.onChange = this.onChange.bind(this);
@@ -33,7 +34,7 @@ class MainSidebar extends React.Component {
     this.setState({
       ...this.state,
       menuVisible: Store.getMenuState(),
-      sidebarNavItems: Store.getSidebarItems()
+      sidebarNavItems: getSidebarNavItems()
     });
   }
 
