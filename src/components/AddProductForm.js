@@ -33,8 +33,13 @@ class AddProductForm extends Component {
 
   handleScan = (code) => {
     console.log(code);
-    const data = CodeParser(code, this.props.product.manufacturer_list);
-    this.props.initialize({ name: '', code: data.product_code, manufacturer: data.manufacturer, full_code:code });
+    const data = CodeParser(code, [], this.props.product.manufacturer_list);
+    this.props.initialize({
+      name: '',
+      code: data.product_code,
+      manufacturer: data.manufacturer_id,
+      full_code:code
+    });
     this.setState(
       {
         isScanned: true,
@@ -87,7 +92,7 @@ class AddProductForm extends Component {
                   <InputGroupAddon type="prepend">
                     <InputGroupText>제조사</InputGroupText>
                   </InputGroupAddon>
-                  <Field name="manufacturer" component="select" disabled>
+                  <Field name="manufacturer" component="select">
                     {
                       manufacturer_list.map((manufacturer, i) => {
                         return (

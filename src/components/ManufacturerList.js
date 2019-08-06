@@ -1,8 +1,9 @@
 import { Component } from "react";
 import React from "react";
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import { Card, CardHeader, CardBody } from "shards-react";
+import { Card, CardHeader, CardBody, Button } from "shards-react";
 
 import { requestGetManufacturerList } from "../redux/modules/product";
 
@@ -15,6 +16,9 @@ class ManufacturerList extends Component {
     return (
       <Card small className="mb-4">
         <CardHeader className="border-bottom">
+          <Link to="/manufacturer/add/">
+            <Button> 제조사 추가 </Button>
+          </Link>
         </CardHeader>
         <CardBody className="p-0 pb-3">
           <table className="table mb-0">

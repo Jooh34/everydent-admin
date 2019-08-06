@@ -1,45 +1,70 @@
 import { Component } from "react";
 import React from "react";
 
+import { connect } from 'react-redux';
+
 import { Container, Row, Col, ListGroupItem } from "shards-react";
 
 import PageTitle from "../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
+import ExpirationAlert from "./../components/blog/ExpirationAlert";
 
+import { requestCountInfo } from "../redux/modules/product";
 class BlogOverviewPage extends Component {
   constructor(props) {
     super(props)
-      this.smallStats = [
-        {
-          label: "제조사",
-          value: 1,
-          datasets: [
-            {
-              data: []
-            }
-          ]
-        },
-        {
-          label: "제품",
-          value: 3,
-          datasets: [
-            {
-              data: []
-            }
-          ]
-        },
-        {
-          label: "재고",
-          value: 5,
-          datasets: [
-            {
-              data: []
-            }
-          ]
-        },
-      ]
+  }
+  componentDidMount() {
+    this.props.requestCountInfo();
   }
   render() {
+    const { product_count, product_info_count, manufacturer_count } = this.props.count;
+    this.smallStats = [
+      {
+        label: "제조사",
+        value: manufacturer_count,
+        datasets: [
+          {
+            data: []
+          }
+        ]
+      },
+      {
+        label: "제품",
+        value: product_info_count,
+        datasets: [
+          {
+            data: []
+          }
+        ]
+      },
+      {
+        label: "재고",
+        value: product_count,
+        datasets: [
+          {
+            data: []
+          }
+        ]
+      },
+    ]
+
+    this.expiredProductList = [
+      {
+        id: 1,
+        date: "2019.08.03",
+        name: "제품 1",
+        author: {
+          name: "John Doe",
+          url: "#"
+        },
+        post: {
+          title: "Hello World!",
+          url: "#"
+        },
+      },
+    ]
+
     return (
       <Container fluid className="main-content-container px-4">
         {/* Page Header */}
@@ -60,9 +85,29 @@ class BlogOverviewPage extends Component {
             </Col>
           ))}
         </Row>
+        <Row>
+          {/* ExpirationAlert */}
+          <Col lg="5" md="12" sm="12" className="mb-4">
+            <ExpirationAlert title="유통기한 알람" productList={this.expiredProductList}/>
+          </Col>
+        </Row>
       </Container>
     )
   }
 }
 
+
+let mapStateToProps = (state) => {
+    return {
+      count: state.product.count,
+    };
+};
+
+let mapDispatchToProps = (dispatch) => {
+  return {
+    requestCountInfo: () => dispatch(requestCountInfo()),
+  };
+};
+
+BlogOverviewPage = connect(mapStateToProps, mapDispatchToProps)(BlogOverviewPage);
 export default BlogOverviewPage;

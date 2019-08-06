@@ -16,6 +16,9 @@ import BarcodeReader from 'react-barcode-reader'
 import { connect } from 'react-redux';
 import { reduxForm, Field } from "redux-form";
 
+import { requestPostManufacturer } from '../redux/modules/product';
+import CodeParser from '../data/CodeParser';
+
 class AddManufacturerForm extends Component {
   constructor(props) {
     super(props);
@@ -25,12 +28,23 @@ class AddManufacturerForm extends Component {
   }
   handleScan = (code) => {
     console.log(code);
+    const data = CodeParser(code, [], this.props.product.manufacturer_list);
+    console.log(data);
+    this.props.initialize({
+      name: '',
+      code: data.manufacturer_code,
+    });
+    this.setState(
+      {
+        isScanned: true,
+      }
+    )
   }
   handleError = (err) => {
     console.log(err)
   }
   handleSubmit = (e) => {
-
+    this.props.requestPostManufacturer();
   }
   render() {
     return (
@@ -57,7 +71,7 @@ class AddManufacturerForm extends Component {
                   <InputGroupAddon type="prepend">
                     <InputGroupText>코드</InputGroupText>
                   </InputGroupAddon>
-                  <Field disabled name="code" component="input" type="text"  />
+                  <Field name="code" component="input" type="text" disabled/>
                 </InputGroup>
 
                 <Button type='submit'>추가</Button>
@@ -79,7 +93,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-
+    requestPostManufacturer: () => dispatch(requestPostManufacturer()),
   };
 };
 
