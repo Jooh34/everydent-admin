@@ -18,7 +18,7 @@ import { reduxForm, Field } from "redux-form";
 
 import CodeParser from '../data/CodeParser';
 
-import { requestGetManufacturerList, requestGetProductInfoList } from '../redux/modules/product';
+import { requestGetManufacturerList, requestGetProductInfoList, requestDeleteStock } from '../redux/modules/product';
 
 class AddStockForm extends Component {
   constructor(props) {
@@ -39,6 +39,13 @@ class AddStockForm extends Component {
     console.log(code);
     const data = CodeParser(code, product_info_list, manufacturer_list);
     this.props.initialize({ name: data.product_name, product_info: data.product_id, code: data.product_code, manufacturer: data.manufacturer_id, full_code: code });
+
+    // ERROR
+    // if (this.state.name == undefined || this.state.code == undefined) {
+    //   window.alert("등록되지 않은 제품입니다. '제품 추가' 메뉴에서 제품을 먼저 추가해주세요.");
+    //   return;
+    // }
+
     this.setState(
       {
         isScanned: true,
@@ -51,8 +58,9 @@ class AddStockForm extends Component {
   }
 
   handleSubmit = (e) => {
-
+    this.props.requestDeleteStock();
   }
+
   render() {
     const { manufacturer_list } = this.props.product;
     return (
@@ -144,6 +152,7 @@ let mapDispatchToProps = (dispatch) => {
   return {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
     requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
+    requestDeleteStock: () => dispatch(requestDeleteStock()),
   };
 };
 

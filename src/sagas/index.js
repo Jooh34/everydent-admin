@@ -29,6 +29,15 @@ function postRequest(sub_url, data) {
   })
 }
 
+function deleteRequest(sub_url, data) {
+  let url = domain + ':' + port + sub_url;
+  return axios ({
+    method: 'delete',
+    url: url,
+    data: data,
+  })
+}
+
 function* requestInitialInfo() {
   let sub_url = `/product_infos/`;
 
@@ -61,6 +70,18 @@ function* requestPostStock() {
   console.log(data)
   try {
     const response = yield call(postRequest, sub_url, data);
+    console.log(response)
+  } catch (error) {
+    console.log('error:' + error)
+  }
+}
+
+function* requestDeleteStock() {
+  let sub_url = `/products/`;
+  let data = yield select(getProductForm);
+  console.log(data)
+  try {
+    const response = yield call(deleteRequest, sub_url, data);
     console.log(response)
   } catch (error) {
     console.log('error:' + error)
@@ -117,6 +138,7 @@ function* rootSaga() {
   yield takeEvery('product/REQUEST_INITIAL_INFO', requestInitialInfo);
   yield takeEvery('product/REQUEST_COUNT_INFO', requestCountInfo);
   yield takeEvery('product/REQUEST_POST_STOCK', requestPostStock);
+  yield takeEvery('product/REQUEST_DELETE_STOCK', requestDeleteStock);
   yield takeEvery('product/REQUEST_POST_PRODUCT_INFO', requestPostProductInfo);
   yield takeEvery('product/REQUEST_GET_PRODUCT_INFO_LIST', requestGetProductInfoList);
   yield takeEvery('product/REQUEST_POST_MANUFACTURER', requestPostManufacturer);
