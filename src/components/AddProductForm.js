@@ -16,7 +16,7 @@ import BarcodeReader from 'react-barcode-reader'
 import { connect } from 'react-redux';
 import { reduxForm, Field } from "redux-form";
 
-import { requestGetManufacturerList, requestPostProductInfo } from '../redux/modules/product';
+import { requestGetManufacturerList, requestGetProductInfoList, requestPostProductInfo } from '../redux/modules/product';
 import CodeParser from '../data/CodeParser';
 
 class AddProductForm extends Component {
@@ -32,14 +32,24 @@ class AddProductForm extends Component {
   }
 
   handleScan = (code) => {
+    const { product_info_list, manufacturer_list } = this.props.product;
     console.log(code);
-    const data = CodeParser(code, [], this.props.product.manufacturer_list);
+
+    const data = CodeParser(code, product_info_list, manufacturer_list);
+    console.log(data)
+    // Error : already registered
+    if (data.product_name || data.product_code) {
+      window.alert("이미 등록된 제품입니다.");
+      return;
+    }
+
     this.props.initialize({
       name: '',
       code: data.product_code,
       manufacturer: data.manufacturer_id,
       full_code:code
     });
+
     this.setState(
       {
         isScanned: true,
@@ -105,7 +115,10 @@ class AddProductForm extends Component {
                 <Button type='submit'>추가</Button>
               </Form>
               :
+              <div>
               <strong className="text-muted d-block mb-2"> 제품을 스캔해주세요. </strong>
+              <Button onClick={() => this.handleScan('010880638822090810190307A0671-01111903071724030621199240IF4510C-01')}>Don't Click this button (this is for test)</Button>
+              </div>
             }
           </ListGroupItem>
         </ListGroup>
@@ -122,6 +135,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
+    requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
     requestPostProductInfo: () => dispatch(requestPostProductInfo()),
   };
 };

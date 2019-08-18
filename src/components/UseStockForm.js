@@ -38,7 +38,15 @@ class AddStockForm extends Component {
 
     console.log(code);
     const data = CodeParser(code, product_info_list, manufacturer_list);
-    this.props.initialize({ name: data.product_name, product_info: data.product_id, code: data.product_code, manufacturer: data.manufacturer_id, full_code: code });
+    this.props.initialize({
+      name: data.product_name,
+      product_info: data.product_id,
+      code: data.product_code,
+      manufacturer: data.manufacturer_id,
+      full_code: code,
+      expiry_start: data.expiry_start,
+      expiry_end: data.expiry_end,
+    });
 
     // ERROR
     // if (this.state.name == undefined || this.state.code == undefined) {
@@ -122,19 +130,22 @@ class AddStockForm extends Component {
                   <InputGroupAddon type="prepend">
                     <InputGroupText>제조일자</InputGroupText>
                   </InputGroupAddon>
-                  <Field name="made_date" component="input" type="text" disabled/>
+                  <Field name="expiry_end" component="input" type="text" disabled/>
                 </InputGroup>
 
                 <InputGroup className="mb-3">
                   <InputGroupAddon type="prepend">
                     <InputGroupText>유통기한</InputGroupText>
                   </InputGroupAddon>
-                  <Field name="expiry_date" component="input" type="text" disabled/>
+                  <Field name="expiry_end" component="input" type="text" disabled/>
                 </InputGroup>
                 <Button theme="danger" type='submit'>사용</Button>
               </Form>
               :
+              <div>
               <strong className="text-muted d-block mb-2"> 제품을 스캔해주세요. </strong>
+              <Button onClick={() => this.handleScan('010880638822090810190307A0671-01111903071724030621199240IF4510C-01')}>Don't Click this button (this is for test)</Button>
+              </div>
             }
           </ListGroupItem>
         </ListGroup>

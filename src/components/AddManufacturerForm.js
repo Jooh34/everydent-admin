@@ -77,7 +77,10 @@ class AddManufacturerForm extends Component {
                 <Button type='submit'>추가</Button>
               </Form>
               :
+              <div>
               <strong className="text-muted d-block mb-2"> 제품을 스캔해주세요. </strong>
+              <Button onClick={() => this.handleScan('010880638822090810190307A0671-01111903071724030621199240IF4510C-01')}>Don't Click this button (this is for test)</Button>
+              </div>
             }
           </ListGroupItem>
         </ListGroup>
