@@ -3,9 +3,9 @@ export default function(code, product_list, manufacturer_list) {
   let product_id, product_name, product_code;
   let expiry_start, expiry_end;
 
-  if (code.substring(0, 6) === '010880') { // QR코드
-    manufacturer_code = code.substring(6,11);
-    product_code = code.substring(11,16);
+  if (code.substring(0, 2) === '01') { // QR코드
+    manufacturer_code = code.substring(2,10);
+    product_code = code.substring(10,16);
     var cur = 16;
     while(cur < code.length) {
       var contour = code.substring(cur, cur+2);
@@ -13,8 +13,12 @@ export default function(code, product_list, manufacturer_list) {
 
       switch (contour) {
         case '10':
-          let something = code.substring(cur, cur+14);
-          cur = cur + 14;
+          if (manufacturer_code === '07630031') {//티타늄
+            cur = cur + 5;
+          }
+          else { // 메가젠
+            cur = cur + 14;
+          }
           break;
 
         case '11':
@@ -35,7 +39,6 @@ export default function(code, product_list, manufacturer_list) {
       }
     }
   }
-
   if (code.length === 13) { // 오스템 1D
     manufacturer_code = code.substring(3, 7);
     product_code = code.substring(7, 12);
