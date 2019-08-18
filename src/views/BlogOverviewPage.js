@@ -3,7 +3,7 @@ import React from "react";
 
 import { connect } from 'react-redux';
 
-import { Container, Row, Col, ListGroupItem } from "shards-react";
+import { Container, Row, Col } from "shards-react";
 
 import PageTitle from "../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
@@ -11,9 +11,6 @@ import ExpirationAlert from "./../components/blog/ExpirationAlert";
 
 import { requestCountInfo } from "../redux/modules/product";
 class BlogOverviewPage extends Component {
-  constructor(props) {
-    super(props)
-  }
   componentDidMount() {
     this.props.requestCountInfo();
   }

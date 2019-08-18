@@ -16,7 +16,7 @@ import BarcodeReader from 'react-barcode-reader'
 import { connect } from 'react-redux';
 import { reduxForm, Field } from "redux-form";
 
-import { requestGetManufacturerList, requestGetProductInfoList, requestPostProductInfo } from '../redux/modules/product';
+import { requestGetManufacturerList, requestGetProductInfoList, requestPostProductInfo, resetSuccessState } from '../redux/modules/product';
 import CodeParser from '../data/CodeParser';
 
 class AddProductForm extends Component {
@@ -38,7 +38,7 @@ class AddProductForm extends Component {
     const data = CodeParser(code, product_info_list, manufacturer_list);
     console.log(data)
     // Error : already registered
-    if (data.product_name || data.product_code) {
+    if (data.product_name) {
       window.alert("이미 등록된 제품입니다.");
       return;
     }
@@ -64,6 +64,10 @@ class AddProductForm extends Component {
   }
   render() {
     const { manufacturer_list } = this.props.product;
+    if (this.props.product.is_post_success || this.props.product.is_post_failure) {
+      window.alert(this.props.product.message);
+      this.props.resetSuccessState();
+    }
     return (
       <Col sm="12" md="8">
         <BarcodeReader
@@ -129,6 +133,7 @@ class AddProductForm extends Component {
 let mapStateToProps = (state) => {
     return {
       product: state.product,
+      product_form: state.form.product,
     };
 };
 
@@ -137,6 +142,7 @@ let mapDispatchToProps = (dispatch) => {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
     requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
     requestPostProductInfo: () => dispatch(requestPostProductInfo()),
+    resetSuccessState: () => dispatch(resetSuccessState()),
   };
 };
 

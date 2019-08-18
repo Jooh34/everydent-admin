@@ -3,12 +3,10 @@ import React from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { Button, Card, CardHeader, CardBody, Col, Row,
+import { Button, Card, CardHeader, CardBody, Col,
 InputGroupText, FormInput, FormSelect,
 InputGroup,
 InputGroupAddon, } from "shards-react";
-
-import { Field } from "redux-form";
 
 import { requestGetProductInfoList, requestGetManufacturerList } from "../redux/modules/product";
 

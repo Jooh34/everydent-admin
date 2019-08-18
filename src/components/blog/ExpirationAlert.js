@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import {
   Card,
   CardHeader,
@@ -24,9 +23,7 @@ const ExpirationAlert = ({ title, productList }) => (
           <div className="blog-comments__content">
             {/* Content :: Title */}
             <div className="blog-comments__meta text-mutes">
-              <a className="text-secondary">
-                {discussion.name}
-              </a>
+              {discussion.name}
               <span className="text-mutes">- {discussion.date}</span>
             </div>
 

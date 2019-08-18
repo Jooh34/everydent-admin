@@ -18,13 +18,14 @@ import { reduxForm, Field } from "redux-form";
 
 import CodeParser from '../data/CodeParser';
 
-import { requestGetManufacturerList, requestGetProductInfoList, requestPostStock } from '../redux/modules/product';
+import { requestGetManufacturerList, requestGetProductInfoList, requestPostStock, resetSuccessState } from '../redux/modules/product';
 
 class AddStockForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isScanned: false,
+      isRequesting: true,
     }
   }
 
@@ -39,7 +40,7 @@ class AddStockForm extends Component {
     console.log(code);
     const data = CodeParser(code, product_info_list, manufacturer_list);
     // ERROR : not registed
-    if (data.product_code == undefined || data.product_name == undefined) {
+    if (data.product_code === undefined || data.product_name === undefined) {
       window.alert("등록되지 않은 제품입니다. '제품 추가' 메뉴에서 제품을 먼저 추가해주세요.");
       return;
     }
@@ -69,6 +70,11 @@ class AddStockForm extends Component {
     this.props.requestPostStock();
   }
   render() {
+    if (this.props.product.is_post_success || this.props.product.is_post_failure) {
+      window.alert(this.props.product.message);
+      this.props.resetSuccessState();
+    }
+    
     const { manufacturer_list } = this.props.product;
     return (
       <Col sm="12" md="8">
@@ -155,6 +161,7 @@ class AddStockForm extends Component {
 let mapStateToProps = (state) => {
     return {
       product: state.product,
+      product_form: state.form.product,
     };
 };
 
@@ -163,6 +170,7 @@ let mapDispatchToProps = (dispatch) => {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
     requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
     requestPostStock: () => dispatch(requestPostStock()),
+    resetSuccessState: () => dispatch(resetSuccessState()),
   };
 };
 

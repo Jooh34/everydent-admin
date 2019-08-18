@@ -1,4 +1,4 @@
-import { createAction, handleActions } from 'redux-actions';
+import { createAction, handleActions, combineActions } from 'redux-actions';
 
 // Actions
 const REQUEST_INITIAL_INFO = 'product/REQUEST_INITIAL_INFO';
@@ -25,7 +25,8 @@ const SUCCESS_POST_MANUFACTURER = 'product/SUCCESS_POST_MANUFACTURER';
 const REQUEST_GET_MANUFACTURER_LIST = 'product/REQUEST_GET_MANUFACTURER_LIST';
 const SUCCESS_GET_MANUFACTURER_LIST = 'product/SUCCESS_GET_MANUFACTURER_LIST';
 
-const SCAN_CODE = 'product/SCAN_CODE';
+const POST_FAILURE = 'product/POST_FAILURE';
+const RESET_SUCCESS_STATE = 'product/RESET_SUCCESS_STATE';
 
 // Action Creators
 export const requestInitialInfo = createAction(REQUEST_INITIAL_INFO);
@@ -49,21 +50,17 @@ export const successPostManufacturer = createAction(SUCCESS_POST_MANUFACTURER);
 export const requestGetManufacturerList = createAction(REQUEST_GET_MANUFACTURER_LIST);
 export const successGetManufacturerList = createAction(SUCCESS_GET_MANUFACTURER_LIST);
 
-
-export const scanCode = createAction(SCAN_CODE);
-
-
+export const postFailure = createAction(POST_FAILURE);
+export const resetSuccessState = createAction(RESET_SUCCESS_STATE);
 
 const initialState = {
   product_info_list: [],
   manufacturer_list: [],
   name: '',
-  full_code: '',
-  code: '',
-  manufacturer: '',
-  made_date: '',
-  expiry_date: '',
   count: [],
+  is_post_success: false,
+  is_post_failure: false,
+  message: '',
 };
 
 export default handleActions({
@@ -95,14 +92,29 @@ export default handleActions({
     }
   },
 
-  [SCAN_CODE]: (state, action) => {
+  [combineActions(SUCCESS_POST_STOCK, SUCCESS_POST_PRODUCT_INFO, SUCCESS_DELETE_STOCK)]: (state, action) => {
     return {
       ...state,
-      name: action.product.name,
-      code: action.product.code,
-      manufacturer: action.product.manufacturer,
-      made_date: action.product.made_date,
-      expiry_date: action.product.expiry_date,
-    };
+      is_post_success: true,
+      message: action.payload,
+    }
   },
+
+  [POST_FAILURE]: (state, action) => {
+    return {
+      ...state,
+      is_post_failure: true,
+      message: action.payload,
+    }
+  },
+
+  [RESET_SUCCESS_STATE]: (state, action) => {
+    return {
+      ...state,
+      is_post_success: false,
+      is_post_failure: false,
+      message: '',
+    }
+  }
+
 }, initialState);

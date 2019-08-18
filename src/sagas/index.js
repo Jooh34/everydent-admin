@@ -3,9 +3,13 @@ import axios from 'axios';
 
 import {
   successInitialInfo,
+  successPostStock,
+  successDeleteStock,
   successGetProductInfoList,
+  successPostProductInfo,
   successGetManufacturerList,
-  successCountInfo
+  successCountInfo,
+  postFailure,
 } from '../redux/modules/product';
 
 export const getProductForm = (state) => state.form.product.values;
@@ -48,6 +52,7 @@ function* requestInitialInfo() {
     yield put(successInitialInfo(data));
   } catch (error) {
     console.log('error:' + error)
+    yield put(postFailure(error));
   }
 }
 
@@ -61,30 +66,38 @@ function* requestCountInfo() {
     yield put(successCountInfo(data));
   } catch (error) {
     console.log('error:' + error)
+    yield put(postFailure(error));
   }
 }
 
 function* requestPostStock() {
   let sub_url = `/products/`;
   let data = yield select(getProductForm);
-  console.log(data)
+
   try {
     const response = yield call(postRequest, sub_url, data);
-    console.log(response)
+    yield put(successPostStock(`제품명: ${data.name}\n재고가 성공적으로 추가되었습니다`));
   } catch (error) {
     console.log('error:' + error)
+    yield put(postFailure(error));
   }
 }
 
 function* requestDeleteStock() {
   let sub_url = `/products/`;
   let data = yield select(getProductForm);
-  console.log(data)
+
   try {
     const response = yield call(deleteRequest, sub_url, data);
-    console.log(response)
+    if (response.status === 200) {
+      yield put(successDeleteStock(`제품명: ${data.name}\n재고가 성공적으로 사용되었습니다`));
+    }
+    else if (response.status === 204) {
+      yield put(successDeleteStock(`해당 바코드 정보의 재고가 존재하지 않습니다.`));
+    }
   } catch (error) {
-    console.log('error:' + error)
+    console.log('error:' + error);
+    yield put(postFailure(error));
   }
 }
 
@@ -92,10 +105,14 @@ function* requestPostProductInfo() {
   let sub_url = `/product_infos/`;
   let data = yield select(getProductForm);
   console.log(JSON.stringify(data));
-  const response = yield call(postRequest, sub_url, data);
 
-  console.log('----- POST DATA -------')
-  console.log(JSON.stringify(response.data));
+  try {
+    const response = yield call(postRequest, sub_url, data);
+    yield put(successPostProductInfo(`제품명: ${data.name}\n제품이 성공적으로 추가되었습니다`));
+  } catch (error) {
+    console.log('error:' + error);
+    yield put(postFailure(error));
+  }
 }
 
 function* requestGetProductInfoList() {
@@ -107,7 +124,8 @@ function* requestGetProductInfoList() {
 
     yield put(successGetProductInfoList(data));
   } catch (error) {
-    console.log('error:' + error)
+    console.log('error:' + error);
+    yield put(postFailure(error));
   }
 }
 
@@ -130,7 +148,8 @@ function* requestGetManufacturerList() {
 
     yield put(successGetManufacturerList(data));
   } catch (error) {
-    console.log('error:' + error)
+    console.log('error:' + error);
+    yield put(postFailure(error));
   }
 }
 

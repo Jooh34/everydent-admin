@@ -18,7 +18,7 @@ import { reduxForm, Field } from "redux-form";
 
 import CodeParser from '../data/CodeParser';
 
-import { requestGetManufacturerList, requestGetProductInfoList, requestDeleteStock } from '../redux/modules/product';
+import { requestGetManufacturerList, requestGetProductInfoList, requestDeleteStock, resetSuccessState } from '../redux/modules/product';
 
 class AddStockForm extends Component {
   constructor(props) {
@@ -70,6 +70,11 @@ class AddStockForm extends Component {
   }
 
   render() {
+    if (this.props.product.is_post_success || this.props.product.is_post_failure) {
+      window.alert(this.props.product.message);
+      this.props.resetSuccessState();
+    }
+
     const { manufacturer_list } = this.props.product;
     return (
       <Col sm="12" md="8">
@@ -156,6 +161,7 @@ class AddStockForm extends Component {
 let mapStateToProps = (state) => {
     return {
       product: state.product,
+      product_form: state.form.product,
     };
 };
 
@@ -164,6 +170,7 @@ let mapDispatchToProps = (dispatch) => {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
     requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
     requestDeleteStock: () => dispatch(requestDeleteStock()),
+    resetSuccessState: () => dispatch(resetSuccessState()),
   };
 };
 
