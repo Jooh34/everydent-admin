@@ -15,12 +15,8 @@ class AddStock extends Component {
           <PageTitle sm="4" title="재고 추가" subtitle="재고 관리" className="text-sm-left" />
         </Row>
         <Row>
-          <Col lg="6" md="12">
-            <ListGroupItem className="p-3">
-              <Row>
-                <AddStockForm/>
-              </Row>
-            </ListGroupItem>
+          <Col lg="12" md="12">
+            <AddStockForm/>
           </Col>
         </Row>
       </Container>

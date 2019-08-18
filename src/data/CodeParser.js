@@ -1,5 +1,5 @@
 export default function(code, product_list, manufacturer_list) {
-  let manufacturer_id, manufacturer_code;
+  let manufacturer_id, manufacturer_code, manufacturer_name;
   let product_id, product_name, product_code;
   let expiry_start, expiry_end;
 
@@ -48,12 +48,12 @@ export default function(code, product_list, manufacturer_list) {
 
   for (let i=0; i<manufacturer_list.length; i++) {
     if (manufacturer_list[i].code === manufacturer_code) {
+      manufacturer_name = manufacturer_list[i].name;
       manufacturer_id = manufacturer_list[i].id;
       break;
     }
   }
 
-  console.log(product_list)
   for (let i=0; i<product_list.length; i++) {
     if (product_list[i].code === product_code) {
       product_id = product_list[i].id;
@@ -64,6 +64,7 @@ export default function(code, product_list, manufacturer_list) {
 
   return {
     manufacturer_id: manufacturer_id,
+    manufacturer_name: manufacturer_name,
     manufacturer_code: manufacturer_code,
     product_id: product_id,
     product_name: product_name,

@@ -13,6 +13,7 @@ import {
 } from '../redux/modules/product';
 
 export const getProductForm = (state) => state.form.product.values;
+export const getProductState = (state) => state.product;
 let domain = 'http://' + window.location.hostname;
 let port = 8000;
 
@@ -72,11 +73,13 @@ function* requestCountInfo() {
 
 function* requestPostStock() {
   let sub_url = `/products/`;
-  let data = yield select(getProductForm);
+  let product = yield select(getProductState);
+  let data = product.scanned_stock_list;
+  console.log(data)
 
   try {
     const response = yield call(postRequest, sub_url, data);
-    yield put(successPostStock(`제품명: ${data.name}\n재고가 성공적으로 추가되었습니다`));
+    yield put(successPostStock(`재고가 성공적으로 추가되었습니다`));
   } catch (error) {
     console.log('error:' + error)
     yield put(postFailure(error));

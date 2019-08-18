@@ -8,6 +8,8 @@ const REQUEST_COUNT_INFO = 'product/REQUEST_COUNT_INFO';
 const SUCCESS_COUNT_INFO = 'product/SUCCESS_COUNT_INFO';
 
 // stock
+const RESET_SCANNED_STOCK_LIST = 'product/RESET_SCANNED_STOCK_LIST';
+const ADD_SCANNED_STOCK = 'product/ADD_SCANNED_STOCK';
 const REQUEST_POST_STOCK = 'product/REQUEST_POST_STOCK';
 const SUCCESS_POST_STOCK = 'product/SUCCESS_POST_STOCK';
 const REQUEST_DELETE_STOCK = 'product/REQUEST_DELETE_STOCK';
@@ -35,6 +37,8 @@ export const successInitialInfo = createAction(SUCCESS_INITIAL_INFO);
 export const requestCountInfo = createAction(REQUEST_COUNT_INFO);
 export const successCountInfo = createAction(SUCCESS_COUNT_INFO);
 
+export const resetScannedStockList = createAction(RESET_SCANNED_STOCK_LIST);
+export const addScannedStock = createAction(ADD_SCANNED_STOCK);
 export const requestPostStock = createAction(REQUEST_POST_STOCK);
 export const successPostStock = createAction(SUCCESS_POST_STOCK);
 export const requestDeleteStock = createAction(REQUEST_DELETE_STOCK);
@@ -56,7 +60,7 @@ export const resetSuccessState = createAction(RESET_SUCCESS_STATE);
 const initialState = {
   product_info_list: [],
   manufacturer_list: [],
-  name: '',
+  scanned_stock_list: [],
   count: [],
   is_post_success: false,
   is_post_failure: false,
@@ -64,6 +68,23 @@ const initialState = {
 };
 
 export default handleActions({
+  [RESET_SCANNED_STOCK_LIST]: (state, action) => {
+    return {
+      ...state,
+      scanned_stock_list: [],
+    }
+  },
+
+  [ADD_SCANNED_STOCK]: (state, action) => {
+    return {
+      ...state,
+      scanned_stock_list: [
+        ...state.scanned_stock_list,
+        action.payload,
+      ]
+    }
+  },
+
   [SUCCESS_INITIAL_INFO]: (state, action) => {
     return {
       ...state,
