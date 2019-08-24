@@ -7,6 +7,9 @@ const SUCCESS_INITIAL_INFO = 'product/SUCCESS_INITIAL_INFO';
 const REQUEST_COUNT_INFO = 'product/REQUEST_COUNT_INFO';
 const SUCCESS_COUNT_INFO = 'product/SUCCESS_COUNT_INFO';
 
+const REQUEST_EXPIRY_LIST = 'product/REQUEST_EXPIRY_LIST';
+const SUCCESS_EXPIRY_LIST = 'product/SUCCESS_EXPIRY_LIST';
+
 // stock
 const RESET_SCANNED_STOCK_LIST = 'product/RESET_SCANNED_STOCK_LIST';
 const ADD_SCANNED_STOCK = 'product/ADD_SCANNED_STOCK';
@@ -37,6 +40,9 @@ export const successInitialInfo = createAction(SUCCESS_INITIAL_INFO);
 export const requestCountInfo = createAction(REQUEST_COUNT_INFO);
 export const successCountInfo = createAction(SUCCESS_COUNT_INFO);
 
+export const requestExpiryList = createAction(REQUEST_EXPIRY_LIST);
+export const successExpiryList = createAction(SUCCESS_EXPIRY_LIST);
+
 export const resetScannedStockList = createAction(RESET_SCANNED_STOCK_LIST);
 export const addScannedStock = createAction(ADD_SCANNED_STOCK);
 export const requestPostStock = createAction(REQUEST_POST_STOCK);
@@ -62,6 +68,7 @@ const initialState = {
   manufacturer_list: [],
   scanned_stock_list: [],
   count: [],
+  expiry_list: [],
   is_post_success: false,
   is_post_failure: false,
   message: '',
@@ -96,6 +103,13 @@ export default handleActions({
     return {
       ...state,
       count: action.payload,
+    }
+  },
+
+  [SUCCESS_EXPIRY_LIST]: (state, action) => {
+    return {
+      ...state,
+      expiry_list: action.payload,
     }
   },
 

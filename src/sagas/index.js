@@ -9,6 +9,7 @@ import {
   successPostProductInfo,
   successGetManufacturerList,
   successCountInfo,
+  successExpiryList,
   postFailure,
 } from '../redux/modules/product';
 
@@ -67,7 +68,20 @@ function* requestCountInfo() {
     yield put(successCountInfo(data));
   } catch (error) {
     console.log('error:' + error)
-    yield put(postFailure(error));
+  }
+}
+
+function* requestExpiryList() {
+  let sub_url = `/expiry_list/`;
+  console.log('requestExpiryList')
+  try {
+    const response = yield call(getRequest, sub_url);
+    const data = response.data;
+
+    console.log(data)
+    yield put(successExpiryList(data));
+  } catch (error) {
+    console.log('error:' + error)
   }
 }
 
@@ -159,6 +173,7 @@ function* requestGetManufacturerList() {
 function* rootSaga() {
   yield takeEvery('product/REQUEST_INITIAL_INFO', requestInitialInfo);
   yield takeEvery('product/REQUEST_COUNT_INFO', requestCountInfo);
+  yield takeEvery('product/REQUEST_EXPIRY_LIST', requestExpiryList);
   yield takeEvery('product/REQUEST_POST_STOCK', requestPostStock);
   yield takeEvery('product/REQUEST_DELETE_STOCK', requestDeleteStock);
   yield takeEvery('product/REQUEST_POST_PRODUCT_INFO', requestPostProductInfo);

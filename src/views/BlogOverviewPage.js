@@ -8,6 +8,7 @@ import { Container, Row, Col } from "shards-react";
 import PageTitle from "../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
 import ExpirationAlert from "./../components/blog/ExpirationAlert";
+import ExpiryList from "../components/ExpiryList";
 
 import { requestCountInfo } from "../redux/modules/product";
 class BlogOverviewPage extends Component {
@@ -84,8 +85,8 @@ class BlogOverviewPage extends Component {
         </Row>
         <Row>
           {/* ExpirationAlert */}
-          <Col lg="5" md="12" sm="12" className="mb-4">
-            <ExpirationAlert title="유통기한 알람" productList={this.expiredProductList}/>
+          <Col lg="12" md="12">
+            <ExpiryList/>
           </Col>
         </Row>
       </Container>
