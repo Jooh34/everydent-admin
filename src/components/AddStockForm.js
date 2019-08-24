@@ -73,6 +73,7 @@ class AddStockForm extends Component {
     if (this.props.product.is_post_success || this.props.product.is_post_failure) {
       window.alert(this.props.product.message);
       this.props.resetSuccessState();
+      window.location.reload();
     }
 
     const btnStyle = {
