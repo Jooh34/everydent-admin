@@ -1,6 +1,7 @@
 import { Component } from "react";
 import React from "react";
 import {
+  Button,
   Card,
   CardHeader,
   CardBody,
@@ -8,20 +9,26 @@ import {
 
 import { connect } from 'react-redux';
 
-import { requestExpiryList } from '../redux/modules/product';
+import { requestStockList, requestDeleteStockByID, resetSuccessState } from "../redux/modules/product";
 
-class ExpiryList extends Component {
+class StockList extends Component {
   componentWillMount() {
-    this.props.requestExpiryList();
+    const { id } = this.props;
+    this.props.requestStockList(id);
   }
-
   render() {
-    const { expiry_list } = this.props.product;
+    if (this.props.product.is_post_success || this.props.product.is_post_failure) {
+      window.alert(this.props.product.message);
+      this.props.resetSuccessState();
+      window.location.reload();
+    }
+
+    const { stock_list } = this.props.product;
+    const { usable } = this.props;
     return (
       <div>
         <Card small className="mb-4">
           <CardHeader className="border-bottom">
-            유통 기한 2000일 이내 만료 목록
           </CardHeader>
           <CardBody className="p-0 pb-3">
             <table className="table mb-0">
@@ -42,11 +49,22 @@ class ExpiryList extends Component {
                   <th scope="col" className="border-0">
                     유통기한
                   </th>
+                  {usable &&
+                    <th scope="col" className="border-0">
+                      사용
+                    </th>
+                  }
                 </tr>
               </thead>
               <tbody>
-                {expiry_list.map((expiry, i) => {
-                  return (<TableRow index={i} key={i} data={expiry} />)
+                {stock_list.map((expiry, i) => {
+                  return (<TableRow
+                    index={i}
+                    key={i}
+                    data={expiry}
+                    usable={usable}
+                    requestDeleteStockByID={this.props.requestDeleteStockByID}/>
+                  )
                 })}
               </tbody>
             </table>
@@ -59,7 +77,7 @@ class ExpiryList extends Component {
 
 class TableRow extends Component {
   render() {
-    const { index, data } = this.props;
+    const { index, data, usable, requestDeleteStockByID } = this.props;
     return(
       <tr>
         <td>{index+1}</td>
@@ -67,22 +85,31 @@ class TableRow extends Component {
         <td>{data.manufacturer_name}</td>
         <td>{data.expiry_start}</td>
         <td>{data.expiry_end}</td>
+        <td>
+        {usable &&
+          <Button theme="danger" onClick={() => requestDeleteStockByID(data.id)}>
+            사용
+          </Button>
+        }
+        </td>
       </tr>
     );
   }
 }
 
 let mapStateToProps = (state) => {
-    return {
-      product: state.product,
-    };
+  return {
+    product: state.product,
+  };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    requestExpiryList: () => dispatch(requestExpiryList()),
+    requestStockList: (id) => dispatch(requestStockList(id)),
+    requestDeleteStockByID: (id) => dispatch(requestDeleteStockByID(id)),
+    resetSuccessState: () => dispatch(resetSuccessState()),
   };
 };
 
-ExpiryList = connect(mapStateToProps, mapDispatchToProps)(ExpiryList);
-export default ExpiryList;
+StockList = connect(mapStateToProps, mapDispatchToProps)(StockList);
+export default StockList;

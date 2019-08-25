@@ -13,6 +13,7 @@ import ManufacturerListPage from "./views/ManufacturerListPage";
 
 import AddProductPage from "./views/AddProductPage";
 import AddManufacturerPage from "./views/AddManufacturerPage";
+import StockListPage from "./views/StockListPage";
 
 // import Errors from "./views/Errors";
 
@@ -45,6 +46,12 @@ export default [
     component: ProductListPage
   },
   {
+    path: `/stock_list/:id`,
+    exact: true,
+    layout: DefaultLayout,
+    component: StockListPage
+  },
+  {
     path: "/product/add",
     layout: DefaultLayout,
     component: AddProductPage
@@ -60,9 +67,4 @@ export default [
     layout: DefaultLayout,
     component: AddManufacturerPage
   },
-  // {
-  //   path: "/errors",
-  //   layout: DefaultLayout,
-  //   component: Errors
-  // },
 ];

@@ -7,7 +7,6 @@ import { Container, Row, Col } from "shards-react";
 
 import PageTitle from "../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
-import ExpirationAlert from "./../components/blog/ExpirationAlert";
 import ExpiryList from "../components/ExpiryList";
 
 import { requestCountInfo } from "../redux/modules/product";

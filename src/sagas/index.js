@@ -5,6 +5,8 @@ import {
   successInitialInfo,
   successPostStock,
   successDeleteStock,
+  successStockList,
+  successDeleteStockByID,
   successGetProductInfoList,
   successPostProductInfo,
   successGetManufacturerList,
@@ -92,7 +94,7 @@ function* requestPostStock() {
   console.log(data)
 
   try {
-    const response = yield call(postRequest, sub_url, data);
+    yield call(postRequest, sub_url, data);
     yield put(successPostStock(`재고가 성공적으로 추가되었습니다`));
   } catch (error) {
     console.log('error:' + error)
@@ -118,13 +120,43 @@ function* requestDeleteStock() {
   }
 }
 
+function* requestDeleteStockByID(action) {
+  let sub_url = `/products/${action.payload}`;
+
+  try {
+    const response = yield call(deleteRequest, sub_url);
+    if (response.status === 200) {
+      yield put(successDeleteStockByID(`제품명: ${response.data.name}\n재고가 성공적으로 사용되었습니다`));
+    }
+    else if (response.status === 204) {
+      yield put(successDeleteStockByID(`해당 정보의 재고가 존재하지 않습니다.`));
+    }
+  } catch (error) {
+    console.log('error:' + error);
+    yield put(postFailure(error));
+  }
+}
+
+function* requestStockList(action) {
+  let sub_url = `/stock_list/${action.payload}/`;
+
+  try {
+    const response = yield call(getRequest, sub_url);
+    const data = response.data;
+
+    yield put(successStockList(data));
+  } catch (error) {
+    console.log('error:' + error);
+  }
+}
+
 function* requestPostProductInfo() {
   let sub_url = `/product_infos/`;
   let data = yield select(getProductForm);
   console.log(JSON.stringify(data));
 
   try {
-    const response = yield call(postRequest, sub_url, data);
+    yield call(postRequest, sub_url, data);
     yield put(successPostProductInfo(`제품명: ${data.name}\n제품이 성공적으로 추가되었습니다`));
   } catch (error) {
     console.log('error:' + error);
@@ -174,10 +206,15 @@ function* rootSaga() {
   yield takeEvery('product/REQUEST_INITIAL_INFO', requestInitialInfo);
   yield takeEvery('product/REQUEST_COUNT_INFO', requestCountInfo);
   yield takeEvery('product/REQUEST_EXPIRY_LIST', requestExpiryList);
+
   yield takeEvery('product/REQUEST_POST_STOCK', requestPostStock);
   yield takeEvery('product/REQUEST_DELETE_STOCK', requestDeleteStock);
+  yield takeEvery('product/REQUEST_STOCK_LIST', requestStockList);
+  yield takeEvery('product/REQUEST_DELETE_STOCK_BY_ID', requestDeleteStockByID);
+
   yield takeEvery('product/REQUEST_POST_PRODUCT_INFO', requestPostProductInfo);
   yield takeEvery('product/REQUEST_GET_PRODUCT_INFO_LIST', requestGetProductInfoList);
+
   yield takeEvery('product/REQUEST_POST_MANUFACTURER', requestPostManufacturer);
   yield takeEvery('product/REQUEST_GET_MANUFACTURER_LIST', requestGetManufacturerList);
 }

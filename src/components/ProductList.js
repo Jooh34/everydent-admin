@@ -134,7 +134,13 @@ class TableRow extends Component {
         <td>{data.name}</td>
         <td>{data.code}</td>
         <td>{data.manufacturer_name}</td>
-        <td>{data.product_count}</td>
+        <td>
+        {
+          (data.product_count) ?
+          <Link to={`/stock_list/${data.id}/`}>{data.product_count}</Link> :
+          data.product_count
+        }
+        </td>
       </tr>
     );
   }

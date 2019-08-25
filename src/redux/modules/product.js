@@ -13,10 +13,16 @@ const SUCCESS_EXPIRY_LIST = 'product/SUCCESS_EXPIRY_LIST';
 // stock
 const RESET_SCANNED_STOCK_LIST = 'product/RESET_SCANNED_STOCK_LIST';
 const ADD_SCANNED_STOCK = 'product/ADD_SCANNED_STOCK';
+
 const REQUEST_POST_STOCK = 'product/REQUEST_POST_STOCK';
 const SUCCESS_POST_STOCK = 'product/SUCCESS_POST_STOCK';
 const REQUEST_DELETE_STOCK = 'product/REQUEST_DELETE_STOCK';
 const SUCCESS_DELETE_STOCK = 'product/SUCCESS_DELETE_STOCK';
+
+const REQUEST_STOCK_LIST = 'product/REQUEST_STOCK_LIST';
+const SUCCESS_STOCK_LIST = 'product/SUCCESS_STOCK_LIST';
+const REQUEST_DELETE_STOCK_BY_ID = 'product/REQUEST_DELETE_STOCK_BY_ID';
+const SUCCESS_DELETE_STOCK_BY_ID = 'product/SUCCESS_DELETE_STOCK_BY_ID';
 
 // product_info
 const REQUEST_POST_PRODUCT_INFO = 'product/REQUEST_POST_PRODUCT_INFO';
@@ -43,13 +49,21 @@ export const successCountInfo = createAction(SUCCESS_COUNT_INFO);
 export const requestExpiryList = createAction(REQUEST_EXPIRY_LIST);
 export const successExpiryList = createAction(SUCCESS_EXPIRY_LIST);
 
+//stock
 export const resetScannedStockList = createAction(RESET_SCANNED_STOCK_LIST);
 export const addScannedStock = createAction(ADD_SCANNED_STOCK);
+
 export const requestPostStock = createAction(REQUEST_POST_STOCK);
 export const successPostStock = createAction(SUCCESS_POST_STOCK);
 export const requestDeleteStock = createAction(REQUEST_DELETE_STOCK);
 export const successDeleteStock = createAction(SUCCESS_DELETE_STOCK);
 
+export const requestStockList = createAction(REQUEST_STOCK_LIST);
+export const successStockList = createAction(SUCCESS_STOCK_LIST);
+export const requestDeleteStockByID = createAction(REQUEST_DELETE_STOCK_BY_ID)
+export const successDeleteStockByID = createAction(SUCCESS_DELETE_STOCK_BY_ID)
+
+//
 export const requestPostProductInfo = createAction(REQUEST_POST_PRODUCT_INFO);
 export const successPostProductInfo = createAction(SUCCESS_POST_PRODUCT_INFO);
 export const requestGetProductInfoList = createAction(REQUEST_GET_PRODUCT_INFO_LIST);
@@ -69,6 +83,7 @@ const initialState = {
   scanned_stock_list: [],
   count: [],
   expiry_list: [],
+  stock_list: [],
   is_post_success: false,
   is_post_failure: false,
   message: '',
@@ -89,6 +104,13 @@ export default handleActions({
         ...state.scanned_stock_list,
         action.payload,
       ]
+    }
+  },
+
+  [SUCCESS_STOCK_LIST]: (state, action) => {
+    return {
+      ...state,
+      stock_list: action.payload,
     }
   },
 
@@ -127,7 +149,7 @@ export default handleActions({
     }
   },
 
-  [combineActions(SUCCESS_POST_STOCK, SUCCESS_POST_PRODUCT_INFO, SUCCESS_DELETE_STOCK)]: (state, action) => {
+  [combineActions(SUCCESS_POST_STOCK, SUCCESS_POST_PRODUCT_INFO, SUCCESS_DELETE_STOCK, SUCCESS_DELETE_STOCK_BY_ID)]: (state, action) => {
     return {
       ...state,
       is_post_success: true,

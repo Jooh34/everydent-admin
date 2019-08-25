@@ -161,7 +161,6 @@ class AddStockForm extends Component {
 let mapStateToProps = (state) => {
     return {
       product: state.product,
-      product_form: state.form.product,
     };
 };
 

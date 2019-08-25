@@ -5,19 +5,11 @@ import {
   Card,
   CardHeader,
   CardBody,
-  Col,
-  ListGroup,
-  ListGroupItem,
-  Form,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
 } from "shards-react";
 
 import BarcodeReader from 'react-barcode-reader'
 
 import { connect } from 'react-redux';
-import { reduxForm, Field } from "redux-form";
 
 import CodeParser from '../data/CodeParser';
 
@@ -80,7 +72,7 @@ class AddStockForm extends Component {
       float: 'right',
     }
 
-    const { manufacturer_list, scanned_stock_list } = this.props.product;
+    const { scanned_stock_list } = this.props.product;
     return (
       <div>
         <BarcodeReader
@@ -163,10 +155,6 @@ let mapDispatchToProps = (dispatch) => {
     resetSuccessState: () => dispatch(resetSuccessState()),
   };
 };
-
-AddStockForm= reduxForm({
-  form: 'product'
-})(AddStockForm)
 
 AddStockForm = connect(mapStateToProps, mapDispatchToProps)(AddStockForm);
 export default AddStockForm;
