@@ -59,6 +59,10 @@ class AddProductForm extends Component {
   handleError = (err) => {
     console.log(err)
   }
+  handleSubmit = () => {
+    this.props.requestPostProductInfo();
+    window.location.reload();
+  }
   render() {
     const { manufacturer_list } = this.props.product;
     if (this.props.product.is_post_success || this.props.product.is_post_failure) {
@@ -113,7 +117,7 @@ class AddProductForm extends Component {
                     }
                   </Field>
                 </InputGroup>
-                <Button onClick={() => this.props.requestPostProductInfo()}>추가</Button>
+                <Button onClick={() => this.handleSubmit()}>추가</Button>
               </Form>
               :
               <div>
