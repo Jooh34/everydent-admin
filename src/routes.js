@@ -9,6 +9,7 @@ import BlogOverviewPage from "./views/BlogOverviewPage";
 import AddStock from "./views/AddStock";
 import UseStock from "./views/UseStock";
 import ProductListPage from "./views/ProductListPage";
+import ProductDetailPage from "./views/ProductDetailPage";
 import ManufacturerListPage from "./views/ManufacturerListPage";
 
 import AddProductPage from "./views/AddProductPage";
@@ -40,21 +41,27 @@ export default [
     component: UseStock
   },
   {
-    path: "/product",
-    exact: true,
-    layout: DefaultLayout,
-    component: ProductListPage
-  },
-  {
     path: `/stock_list/:id`,
     exact: true,
     layout: DefaultLayout,
     component: StockListPage
   },
   {
+    path: "/product",
+    exact: true,
+    layout: DefaultLayout,
+    component: ProductListPage
+  },
+  {
     path: "/product/add",
     layout: DefaultLayout,
     component: AddProductPage
+  },
+  {
+    path: `/product/:id`,
+    exact: true,
+    layout: DefaultLayout,
+    component: ProductDetailPage
   },
   {
     path: "/manufacturer",

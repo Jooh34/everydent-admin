@@ -131,7 +131,9 @@ class TableRow extends Component {
     return(
       <tr>
         <td>{data.id}</td>
-        <td>{data.name}</td>
+        <td>
+          <Link to={`/product/${data.id}/`}>{data.name}</Link>
+        </td>
         <td>{data.code}</td>
         <td>{data.manufacturer_name}</td>
         <td>

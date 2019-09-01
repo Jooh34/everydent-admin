@@ -121,7 +121,7 @@ function* requestDeleteStock() {
 }
 
 function* requestDeleteStockByID(action) {
-  let sub_url = `/products/${action.payload}`;
+  let sub_url = `/products/${action.payload}/`;
 
   try {
     const response = yield call(deleteRequest, sub_url);
