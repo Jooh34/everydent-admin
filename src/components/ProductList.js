@@ -88,7 +88,7 @@ class ProductList extends Component {
               </FormSelect>
             </InputGroup>
           </Col>
-          <Link to="/product/add/">
+          <Link to="/product/add">
             <Button style={btnStyle}> 제품 추가 </Button>
           </Link>
         </CardHeader>
