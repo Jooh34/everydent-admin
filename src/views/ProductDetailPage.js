@@ -9,7 +9,6 @@ import ChangeProductForm from "../components/ChangeProductForm";
 
 class ProductDetailPage extends Component {
   render() {
-    console.log(this.props)
     return (
       <Container fluid className="main-content-container px-4 pb-4">
         {/* Page Header */}

@@ -58,7 +58,7 @@ export default [
     component: AddProductPage
   },
   {
-    path: `/product/:id`,
+    path: `/product/change/:id`,
     exact: true,
     layout: DefaultLayout,
     component: ProductDetailPage

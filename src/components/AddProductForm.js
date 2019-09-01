@@ -61,13 +61,13 @@ class AddProductForm extends Component {
   }
   handleSubmit = () => {
     this.props.requestPostProductInfo();
-    window.location.reload();
   }
   render() {
     const { manufacturer_list } = this.props.product;
     if (this.props.product.is_post_success || this.props.product.is_post_failure) {
       window.alert(this.props.product.message);
       this.props.resetSuccessState();
+      window.location.reload();
     }
     return (
       <Col sm="12" md="8">
@@ -80,7 +80,7 @@ class AddProductForm extends Component {
           <ListGroupItem className="px-3">
             {
               (this.state.isScanned) ?
-              <Form onSubmit={this.handleSubmit}>
+              <Form>
                 <strong className="text-muted d-block mb-2"> 제품 정보 </strong>
                 <InputGroup className="mb-3">
                   <InputGroupAddon type="prepend">

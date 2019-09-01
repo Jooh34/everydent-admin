@@ -8,7 +8,12 @@ InputGroupText, FormInput, FormSelect,
 InputGroup,
 InputGroupAddon, } from "shards-react";
 
-import { requestGetProductInfoList, requestGetManufacturerList } from "../redux/modules/product";
+import {
+  requestGetProductInfoList,
+  requestGetManufacturerList,
+  requestDeleteProductInfo,
+  resetSuccessState,
+} from "../redux/modules/product";
 
 let btnStyle = {
   float: 'right',
@@ -45,11 +50,17 @@ class ProductList extends Component {
       }
     )
   }
+
+  handleDeleteButtonClick = (id) => {
+    if (window.confirm("정말로 제품을 삭제하시겠습니까?")){
+      this.props.requestDeleteProductInfo(id);
+    }
+  }
+
   render() {
     const { product_info_list, manufacturer_list } = this.props.product;
     const { keyword, selected_manufacturer } = this.state;
     let filtered_list = product_info_list;
-
     if (keyword !== '') {
       filtered_list = filtered_list.filter(
         product_info => product_info.name.includes(keyword)
@@ -60,6 +71,12 @@ class ProductList extends Component {
       filtered_list = filtered_list.filter(
         product_info => product_info.manufacturer === Number(selected_manufacturer)
       )
+    }
+
+    if (this.props.product.is_post_success || this.props.product.is_post_failure) {
+      window.alert(this.props.product.message);
+      this.props.resetSuccessState();
+      window.location.reload();
     }
 
     return (
@@ -111,11 +128,19 @@ class ProductList extends Component {
                 <th scope="col" className="border-0">
                   재고 개수
                 </th>
+                <th scope="col" className="border-0">
+                  제품 삭제
+                </th>
               </tr>
             </thead>
             <tbody>
               {filtered_list.map((data, i) => {
-                return (<TableRow key={i} data={data} />)
+                return (<TableRow
+                  key={i}
+                  index={i}
+                  data={data}
+                  handleDeleteButtonClick={this.handleDeleteButtonClick}
+                />)
               })}
             </tbody>
           </table>
@@ -127,12 +152,12 @@ class ProductList extends Component {
 
 class TableRow extends Component {
   render() {
-    const { data } = this.props;
+    const { index, data, handleDeleteButtonClick } = this.props;
     return(
       <tr>
-        <td>{data.id}</td>
+        <td>{index+1}</td>
         <td>
-          <Link to={`/product/${data.id}/`}>{data.name}</Link>
+          <Link to={`/product/change/${data.id}/`}>{data.name}</Link>
         </td>
         <td>{data.code}</td>
         <td>{data.manufacturer_name}</td>
@@ -142,6 +167,16 @@ class TableRow extends Component {
           <Link to={`/stock_list/${data.id}/`}>{data.product_count}</Link> :
           data.product_count
         }
+        </td>
+        <td>
+          <Button onClick={() => {
+            if (data.product_count === 0) {
+              handleDeleteButtonClick(data.id);
+            }
+            else {
+              window.alert("재고가 남아있어서 제품을 삭제할 수 없습니다.");
+            }
+          }} theme="danger">삭제</Button>
         </td>
       </tr>
     );
@@ -158,6 +193,8 @@ let mapDispatchToProps = (dispatch) => {
   return {
     requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
+    requestDeleteProductInfo: (id) => dispatch(requestDeleteProductInfo(id)),
+    resetSuccessState: () => dispatch(resetSuccessState()),
   };
 };
 

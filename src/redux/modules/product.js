@@ -27,8 +27,15 @@ const SUCCESS_DELETE_STOCK_BY_ID = 'product/SUCCESS_DELETE_STOCK_BY_ID';
 // product_info
 const REQUEST_POST_PRODUCT_INFO = 'product/REQUEST_POST_PRODUCT_INFO';
 const SUCCESS_POST_PRODUCT_INFO = 'product/SUCCESS_POST_PRODUCT_INFO';
+const REQUEST_DELETE_PRODUCT_INFO = 'product/REQUEST_DELETE_PRODUCT_INFO';
+const SUCCESS_DELETE_PRODUCT_INFO = 'product/SUCCESS_DELETE_PRODUCT_INFO';
 const REQUEST_GET_PRODUCT_INFO_LIST = 'product/REQUEST_GET_PRODUCT_INFO_LIST';
 const SUCCESS_GET_PRODUCT_INFO_LIST = 'product/SUCCESS_GET_PRODUCT_INFO_LIST';
+
+const REQUEST_GET_PRODUCT_INFO = 'product/REQUEST_GET_PRODUCT_INFO';
+const SUCCESS_GET_PRODUCT_INFO = 'product/SUCCESS_GET_PRODUCT_INFO';
+const REQUEST_CHANGE_PRODUCT_INFO = 'product/REQUEST_CHANGE_PRODUCT_INFO';
+const SUCCESS_CHANGE_PRODUCT_INFO = 'product/SUCCESS_CHANGE_PRODUCT_INFO';
 
 // manufacturer
 const REQUEST_POST_MANUFACTURER = 'product/REQUEST_POST_MANUFACTURER';
@@ -63,12 +70,20 @@ export const successStockList = createAction(SUCCESS_STOCK_LIST);
 export const requestDeleteStockByID = createAction(REQUEST_DELETE_STOCK_BY_ID)
 export const successDeleteStockByID = createAction(SUCCESS_DELETE_STOCK_BY_ID)
 
-//
+//product info
 export const requestPostProductInfo = createAction(REQUEST_POST_PRODUCT_INFO);
 export const successPostProductInfo = createAction(SUCCESS_POST_PRODUCT_INFO);
+export const requestDeleteProductInfo = createAction(REQUEST_DELETE_PRODUCT_INFO);
+export const successDeleteProductInfo = createAction(SUCCESS_DELETE_PRODUCT_INFO);
 export const requestGetProductInfoList = createAction(REQUEST_GET_PRODUCT_INFO_LIST);
 export const successGetProductInfoList = createAction(SUCCESS_GET_PRODUCT_INFO_LIST);
 
+export const requestGetProductInfo = createAction(REQUEST_GET_PRODUCT_INFO);
+export const successGetProductInfo = createAction(SUCCESS_GET_PRODUCT_INFO);
+export const requestChangeProductInfo = createAction(REQUEST_CHANGE_PRODUCT_INFO);
+export const successChangeProductInfo = createAction(SUCCESS_CHANGE_PRODUCT_INFO);
+
+//manufacturer
 export const requestPostManufacturer = createAction(REQUEST_POST_MANUFACTURER);
 export const successPostManufacturer = createAction(SUCCESS_POST_MANUFACTURER);
 export const requestGetManufacturerList = createAction(REQUEST_GET_MANUFACTURER_LIST);
@@ -84,6 +99,7 @@ const initialState = {
   count: [],
   expiry_list: [],
   stock_list: [],
+  product_detail: undefined,
   is_post_success: false,
   is_post_failure: false,
   message: '',
@@ -149,7 +165,20 @@ export default handleActions({
     }
   },
 
-  [combineActions(SUCCESS_POST_STOCK, SUCCESS_POST_PRODUCT_INFO, SUCCESS_DELETE_STOCK, SUCCESS_DELETE_STOCK_BY_ID)]: (state, action) => {
+  [SUCCESS_GET_PRODUCT_INFO]: (state, action) => {
+    return {
+      ...state,
+      product_detail: action.payload,
+    }
+  },
+
+  [combineActions(
+    SUCCESS_POST_STOCK,
+    SUCCESS_POST_PRODUCT_INFO,
+    SUCCESS_DELETE_STOCK,
+    SUCCESS_DELETE_STOCK_BY_ID,
+    SUCCESS_DELETE_PRODUCT_INFO,
+    SUCCESS_CHANGE_PRODUCT_INFO)]: (state, action) => {
     return {
       ...state,
       is_post_success: true,

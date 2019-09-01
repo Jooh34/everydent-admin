@@ -11,31 +11,40 @@ import {
   InputGroupText,
 } from "shards-react";
 
-import BarcodeReader from 'react-barcode-reader'
-
 import { connect } from 'react-redux';
 import { reduxForm, Field } from "redux-form";
-import { axios } from 'axios';
+import { withRouter } from "react-router-dom";
 
-import { requestGetManufacturerList, requestGetProductInfoList, requestPostProductInfo, resetSuccessState } from '../redux/modules/product';
-import CodeParser from '../data/CodeParser';
+import {
+  requestGetManufacturerList,
+  requestGetProductInfo,
+  requestChangeProductInfo,
+  resetSuccessState } from '../redux/modules/product';
 
 class ChangeProductForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isScanned: false,
-    }
-  }
 
   componentWillMount() {
+    const { id } = this.props;
+    this.props.requestGetManufacturerList();
+    this.props.requestGetProductInfo(id);
+  }
+
+  handleSubmit() {
+    const { id } = this.props;
+    this.props.requestChangeProductInfo(id);
   }
 
   render() {
-    const { manufacturer_list } = this.props.product;
+    const { manufacturer_list, product_detail } = this.props.product;
     if (this.props.product.is_post_success || this.props.product.is_post_failure) {
       window.alert(this.props.product.message);
       this.props.resetSuccessState();
+      this.props.history.push("/product/")
+    }
+    if (this.props.product_form) {
+      if (!('values' in this.props.product_form) && product_detail !== undefined) {
+        this.props.initialize(product_detail);
+      }
     }
     return (
       <Col sm="12" md="8">
@@ -59,13 +68,6 @@ class ChangeProductForm extends Component {
 
               <InputGroup className="mb-3">
                 <InputGroupAddon type="prepend">
-                  <InputGroupText>전체 코드</InputGroupText>
-                </InputGroupAddon>
-                <Field disabled name="full_code" component="input" type="text"  />
-              </InputGroup>
-
-              <InputGroup className="mb-3">
-                <InputGroupAddon type="prepend">
                   <InputGroupText>제조사</InputGroupText>
                 </InputGroupAddon>
                 <Field name="manufacturer" component="select" disabled>
@@ -78,7 +80,7 @@ class ChangeProductForm extends Component {
                   }
                 </Field>
               </InputGroup>
-              <Button>추가</Button>
+              <Button onClick={() => this.handleSubmit()}>추가</Button>
             </Form>
           </ListGroupItem>
         </ListGroup>
@@ -96,8 +98,8 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
-    requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
-    requestPostProductInfo: () => dispatch(requestPostProductInfo()),
+    requestGetProductInfo: (id) => dispatch(requestGetProductInfo(id)),
+    requestChangeProductInfo: (id) => dispatch(requestChangeProductInfo(id)),
     resetSuccessState: () => dispatch(resetSuccessState()),
   };
 };
@@ -107,4 +109,5 @@ ChangeProductForm= reduxForm({
 })(ChangeProductForm)
 
 ChangeProductForm = connect(mapStateToProps, mapDispatchToProps)(ChangeProductForm);
-export default ChangeProductForm;
+
+export default withRouter(ChangeProductForm);

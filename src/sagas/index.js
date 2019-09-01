@@ -1,5 +1,4 @@
 import { select, takeEvery, call, put } from 'redux-saga/effects';
-import axios from 'axios';
 
 import {
   successInitialInfo,
@@ -9,42 +8,23 @@ import {
   successDeleteStockByID,
   successGetProductInfoList,
   successPostProductInfo,
+  successDeleteProductInfo,
+  successGetProductInfo,
+  successChangeProductInfo,
   successGetManufacturerList,
   successCountInfo,
   successExpiryList,
   postFailure,
 } from '../redux/modules/product';
 
+import {
+  getRequest,
+  postRequest,
+  deleteRequest,
+} from './api'
+
 export const getProductForm = (state) => state.form.product.values;
 export const getProductState = (state) => state.product;
-let domain = 'http://' + window.location.hostname;
-let port = 8000;
-
-function getRequest(sub_url) {
-  let url = domain + ':' + port + sub_url;
-  return axios ({
-    method: 'get',
-    url: url
-  })
-}
-
-function postRequest(sub_url, data) {
-  let url = domain + ':' + port + sub_url;
-  return axios ({
-    method: 'post',
-    url: url,
-    data: data,
-  })
-}
-
-function deleteRequest(sub_url, data) {
-  let url = domain + ':' + port + sub_url;
-  return axios ({
-    method: 'delete',
-    url: url,
-    data: data,
-  })
-}
 
 function* requestInitialInfo() {
   let sub_url = `/product_infos/`;
@@ -178,14 +158,54 @@ function* requestGetProductInfoList() {
   }
 }
 
+function* requestDeleteProductInfo(action) {
+  let sub_url = `/product_infos/${action.payload}/`;
+
+  try {
+    const response = yield call(deleteRequest, sub_url);
+    const data = response.data;
+
+    yield put(successDeleteProductInfo(`제품명: ${data.name}\n제품이 성공적으로 삭제되었습니다`));
+  } catch (error) {
+    console.log('error:' + error);
+    yield put(postFailure(error));
+  }
+}
+
+function* requestGetProductInfo(action) {
+  let sub_url = `/product_infos/${action.payload}/`;
+
+  try {
+    const response = yield call(getRequest, sub_url);
+    const data = response.data;
+
+    yield put(successGetProductInfo(data));
+  } catch (error) {
+    console.log('error:' + error);
+    yield put(postFailure(error));
+  }
+}
+
+function* requestChangeProductInfo(action) {
+  let sub_url = `/product_infos/${action.payload}/`;
+  let data = yield select(getProductForm);
+  console.log(JSON.stringify(data));
+
+  try {
+    yield call(postRequest, sub_url, data);
+
+    yield put(successChangeProductInfo(`제품명: ${data.name}\n제품이 성공적으로 변경되었습니다`));
+  } catch (error) {
+    console.log('error:' + error);
+    yield put(postFailure(error));
+  }
+}
+
 function* requestPostManufacturer() {
   let sub_url = `/manufacturers/`;
   let data = yield select(getProductForm);
-  console.log(JSON.stringify(data));
-  const response = yield call(postRequest, sub_url, data);
 
-  console.log('----- POST DATA -------')
-  console.log(JSON.stringify(response.data));
+  yield call(postRequest, sub_url, data);
 }
 
 function* requestGetManufacturerList() {
@@ -214,6 +234,9 @@ function* rootSaga() {
 
   yield takeEvery('product/REQUEST_POST_PRODUCT_INFO', requestPostProductInfo);
   yield takeEvery('product/REQUEST_GET_PRODUCT_INFO_LIST', requestGetProductInfoList);
+  yield takeEvery('product/REQUEST_DELETE_PRODUCT_INFO', requestDeleteProductInfo);
+  yield takeEvery('product/REQUEST_GET_PRODUCT_INFO', requestGetProductInfo);
+  yield takeEvery('product/REQUEST_CHANGE_PRODUCT_INFO', requestChangeProductInfo);
 
   yield takeEvery('product/REQUEST_POST_MANUFACTURER', requestPostManufacturer);
   yield takeEvery('product/REQUEST_GET_MANUFACTURER_LIST', requestGetManufacturerList);
