@@ -14,6 +14,7 @@ import {
   successGetManufacturerList,
   successCountInfo,
   successExpiryList,
+  successRunningOutList,
   postFailure,
 } from '../redux/modules/product';
 
@@ -55,13 +56,26 @@ function* requestCountInfo() {
 
 function* requestExpiryList() {
   let sub_url = `/expiry_list/`;
-  console.log('requestExpiryList')
   try {
     const response = yield call(getRequest, sub_url);
     const data = response.data;
 
     console.log(data)
     yield put(successExpiryList(data));
+  } catch (error) {
+    console.log('error:' + error)
+  }
+}
+
+function* requestRunningOutList() {
+  let sub_url = `/running_out_list/`;
+  console.log('requestRunningOutList')
+  try {
+    const response = yield call(getRequest, sub_url);
+    const data = response.data;
+
+    console.log(data)
+    yield put(successRunningOutList(data));
   } catch (error) {
     console.log('error:' + error)
   }
@@ -226,6 +240,7 @@ function* rootSaga() {
   yield takeEvery('product/REQUEST_INITIAL_INFO', requestInitialInfo);
   yield takeEvery('product/REQUEST_COUNT_INFO', requestCountInfo);
   yield takeEvery('product/REQUEST_EXPIRY_LIST', requestExpiryList);
+  yield takeEvery('product/REQUEST_RUNNING_OUT_LIST', requestRunningOutList);
 
   yield takeEvery('product/REQUEST_POST_STOCK', requestPostStock);
   yield takeEvery('product/REQUEST_DELETE_STOCK', requestDeleteStock);

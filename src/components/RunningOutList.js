@@ -8,20 +8,20 @@ import {
 
 import { connect } from 'react-redux';
 
-import { requestExpiryList } from '../redux/modules/product';
+import { requestRunningOutList } from '../redux/modules/product';
 
-class ExpiryList extends Component {
+class RunningOutList extends Component {
   componentWillMount() {
-    this.props.requestExpiryList();
+    this.props.requestRunningOutList();
   }
 
   render() {
-    const { expiry_list } = this.props.product;
+    const { running_out_list } = this.props.product;
     return (
       <div>
         <Card small className="mb-4">
           <CardHeader className="border-bottom">
-            유통 기한 1년 이내 만료 목록
+            재고 5개 이하 목록
           </CardHeader>
           <CardBody className="p-0 pb-3">
             <table className="table mb-0">
@@ -37,16 +37,13 @@ class ExpiryList extends Component {
                     제조사
                   </th>
                   <th scope="col" className="border-0">
-                    제조일자
-                  </th>
-                  <th scope="col" className="border-0">
-                    유통기한
+                    개수
                   </th>
                 </tr>
               </thead>
               <tbody>
-                {expiry_list.map((expiry, i) => {
-                  return (<TableRow index={i} key={i} data={expiry} />)
+                {running_out_list.map((data, i) => {
+                  return (<TableRow index={i} key={i} data={data} />)
                 })}
               </tbody>
             </table>
@@ -60,13 +57,13 @@ class ExpiryList extends Component {
 class TableRow extends Component {
   render() {
     const { index, data } = this.props;
+    console.log(data)
     return(
       <tr>
         <td>{index+1}</td>
         <td>{data.name}</td>
         <td>{data.manufacturer_name}</td>
-        <td>{data.expiry_start}</td>
-        <td>{data.expiry_end}</td>
+        <td>{data.product_count}</td>
       </tr>
     );
   }
@@ -80,9 +77,9 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    requestExpiryList: () => dispatch(requestExpiryList()),
+    requestRunningOutList: () => dispatch(requestRunningOutList()),
   };
 };
 
-ExpiryList = connect(mapStateToProps, mapDispatchToProps)(ExpiryList);
-export default ExpiryList;
+RunningOutList = connect(mapStateToProps, mapDispatchToProps)(RunningOutList);
+export default RunningOutList;

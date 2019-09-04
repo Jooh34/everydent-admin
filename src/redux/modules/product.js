@@ -9,6 +9,8 @@ const SUCCESS_COUNT_INFO = 'product/SUCCESS_COUNT_INFO';
 
 const REQUEST_EXPIRY_LIST = 'product/REQUEST_EXPIRY_LIST';
 const SUCCESS_EXPIRY_LIST = 'product/SUCCESS_EXPIRY_LIST';
+const REQUEST_RUNNING_OUT_LIST = 'product/REQUEST_RUNNING_OUT_LIST';
+const SUCCESS_RUNNING_OUT_LIST = 'product/SUCCESS_RUNNING_OUT_LIST';
 
 // stock
 const RESET_SCANNED_STOCK_LIST = 'product/RESET_SCANNED_STOCK_LIST';
@@ -55,6 +57,8 @@ export const successCountInfo = createAction(SUCCESS_COUNT_INFO);
 
 export const requestExpiryList = createAction(REQUEST_EXPIRY_LIST);
 export const successExpiryList = createAction(SUCCESS_EXPIRY_LIST);
+export const requestRunningOutList = createAction(REQUEST_RUNNING_OUT_LIST);
+export const successRunningOutList = createAction(SUCCESS_RUNNING_OUT_LIST);
 
 //stock
 export const resetScannedStockList = createAction(RESET_SCANNED_STOCK_LIST);
@@ -93,11 +97,12 @@ export const postFailure = createAction(POST_FAILURE);
 export const resetSuccessState = createAction(RESET_SUCCESS_STATE);
 
 const initialState = {
+  count: [],
+  expiry_list: [],
+  running_out_list: [],
   product_info_list: [],
   manufacturer_list: [],
   scanned_stock_list: [],
-  count: [],
-  expiry_list: [],
   stock_list: [],
   product_detail: undefined,
   is_post_success: false,
@@ -148,6 +153,13 @@ export default handleActions({
     return {
       ...state,
       expiry_list: action.payload,
+    }
+  },
+
+  [SUCCESS_RUNNING_OUT_LIST]: (state, action) => {
+    return {
+      ...state,
+      running_out_list: action.payload,
     }
   },
 
