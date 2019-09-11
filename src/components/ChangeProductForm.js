@@ -16,6 +16,7 @@ import { reduxForm, Field } from "redux-form";
 import { withRouter } from "react-router-dom";
 
 import {
+  clearAll,
   requestGetManufacturerList,
   requestGetProductInfo,
   requestChangeProductInfo,
@@ -26,6 +27,7 @@ class ChangeProductForm extends Component {
   componentWillMount() {
     const { id } = this.props;
     this.props.requestGetManufacturerList();
+    this.props.clearAll();
     this.props.requestGetProductInfo(id);
   }
 
@@ -80,7 +82,7 @@ class ChangeProductForm extends Component {
                   }
                 </Field>
               </InputGroup>
-              <Button onClick={() => this.handleSubmit()}>추가</Button>
+              <Button onClick={() => this.handleSubmit()}>변경</Button>
             </Form>
           </ListGroupItem>
         </ListGroup>
@@ -97,6 +99,7 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
+    clearAll: () => dispatch(clearAll()),
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
     requestGetProductInfo: (id) => dispatch(requestGetProductInfo(id)),
     requestChangeProductInfo: (id) => dispatch(requestChangeProductInfo(id)),

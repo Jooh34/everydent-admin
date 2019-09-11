@@ -45,6 +45,8 @@ const SUCCESS_POST_MANUFACTURER = 'product/SUCCESS_POST_MANUFACTURER';
 const REQUEST_GET_MANUFACTURER_LIST = 'product/REQUEST_GET_MANUFACTURER_LIST';
 const SUCCESS_GET_MANUFACTURER_LIST = 'product/SUCCESS_GET_MANUFACTURER_LIST';
 
+// state management
+const CLEAR_ALL = 'product/CLEAR_ALL';
 const POST_FAILURE = 'product/POST_FAILURE';
 const RESET_SUCCESS_STATE = 'product/RESET_SUCCESS_STATE';
 
@@ -93,6 +95,8 @@ export const successPostManufacturer = createAction(SUCCESS_POST_MANUFACTURER);
 export const requestGetManufacturerList = createAction(REQUEST_GET_MANUFACTURER_LIST);
 export const successGetManufacturerList = createAction(SUCCESS_GET_MANUFACTURER_LIST);
 
+//stat management
+export const clearAll = createAction(CLEAR_ALL);
 export const postFailure = createAction(POST_FAILURE);
 export const resetSuccessState = createAction(RESET_SUCCESS_STATE);
 
@@ -111,6 +115,13 @@ const initialState = {
 };
 
 export default handleActions({
+  [CLEAR_ALL]: (state, action) => {
+    return {
+      ...state,
+      product_detail: undefined,
+    }
+  },
+
   [RESET_SCANNED_STOCK_LIST]: (state, action) => {
     return {
       ...state,
