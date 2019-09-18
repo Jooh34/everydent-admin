@@ -51,9 +51,16 @@ class ProductList extends Component {
     )
   }
 
-  handleDeleteButtonClick = (id) => {
-    if (window.confirm("정말로 제품을 삭제하시겠습니까?")){
-      this.props.requestDeleteProductInfo(id);
+  handleDeleteButtonClick = (data) => {
+    if (data.product_count == 0) {
+      if (window.confirm("정말로 제품을 삭제하시겠습니까?")){
+        this.props.requestDeleteProductInfo(data.id);
+      }
+    }
+    else {
+      if (window.confirm("남아있는 재고가 있고, 제품 삭제 시 재고도 모두 삭제됩니다.\n정말로 제품을 삭제하시겠습니까?")){
+        this.props.requestDeleteProductInfo(data.id);
+      }
     }
   }
 
@@ -170,12 +177,7 @@ class TableRow extends Component {
         </td>
         <td>
           <Button onClick={() => {
-            if (data.product_count === 0) {
-              handleDeleteButtonClick(data.id);
-            }
-            else {
-              window.alert("재고가 남아있어서 제품을 삭제할 수 없습니다.");
-            }
+              handleDeleteButtonClick(data);
           }} theme="danger">삭제</Button>
         </td>
       </tr>
