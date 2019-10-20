@@ -72,15 +72,17 @@ class UseStockForm extends Component {
       window.location.reload();
     }
 
-    const btnStyle = {
-      float: 'right',
-    }
-
+    //Loading
     if (this.props.product.product_info_list.length === 0) {
       return (
         <div>Loading....</div>
       )
     }
+
+    const btnStyle = {
+      float: 'right',
+    }
+
     const { scanned_stock_list } = this.props.product;
     return (
       <div>

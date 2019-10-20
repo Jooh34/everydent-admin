@@ -59,7 +59,7 @@ class AddStockForm extends Component {
 
   handleSubmit = (e) => {
     this.setState({
-      isSubmiting: true,
+      isSubmiting: false,
     });
     this.props.requestPostStock();
   }
