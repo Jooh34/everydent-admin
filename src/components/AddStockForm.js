@@ -21,7 +21,7 @@ class AddStockForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isRequesting: true,
+      isSubmiting: false,
     }
   }
 
@@ -33,9 +33,8 @@ class AddStockForm extends Component {
 
   handleScan = (code) => {
     const { product_info_list, manufacturer_list } = this.props.product;
-
-    console.log(code);
     const data = CodeParser(code, product_info_list, manufacturer_list);
+
     // ERROR : not registed
     if (data.product_code === undefined || data.product_name === undefined) {
       window.alert("등록되지 않은 제품입니다. '제품 추가' 메뉴에서 제품을 먼저 추가해주세요.");
@@ -59,6 +58,9 @@ class AddStockForm extends Component {
   }
 
   handleSubmit = (e) => {
+    this.setState({
+      isSubmiting: true,
+    });
     this.props.requestPostStock();
   }
   render() {
@@ -66,6 +68,12 @@ class AddStockForm extends Component {
       window.alert(this.props.product.message);
       this.props.resetSuccessState();
       window.location.reload();
+    }
+    //Loading
+    if (this.props.product.product_info_list.length === 0) {
+      return (
+        <div>Loading....</div>
+      )
     }
 
     const btnStyle = {
@@ -141,7 +149,6 @@ class TableRow extends Component {
 let mapStateToProps = (state) => {
     return {
       product: state.product,
-      product_form: state.form.product,
     };
 };
 

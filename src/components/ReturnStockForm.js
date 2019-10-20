@@ -66,6 +66,12 @@ class ReturnStockForm extends Component {
       this.props.resetSuccessState();
       window.location.reload();
     }
+    //Loading
+    if (this.props.product.product_info_list.length === 0) {
+      return (
+        <div>Loading....</div>
+      )
+    }
 
     const btnStyle = {
       float: 'right',
@@ -114,7 +120,7 @@ class ReturnStockForm extends Component {
             </table>
           </CardBody>
         </Card>
-        <Button style={btnStyle} onClick={this.handleSubmit}>추가</Button>
+        <Button theme='warning' style={btnStyle} onClick={this.handleSubmit}>반품</Button>
         <Button theme='danger' onClick={() => this.handleScan('010880638822090810190307A0671-01111903071724030621199240IF4510C-01')}>Don't Click this button (this is for test)</Button>
       </div>
     )

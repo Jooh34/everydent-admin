@@ -4,6 +4,7 @@ import {
   successInitialInfo,
   successPostStock,
   successDeleteStock,
+  successReturnStock,
   successStockList,
   successDeleteStockByID,
   successGetProductInfoList,
@@ -98,16 +99,21 @@ function* requestPostStock() {
 
 function* requestDeleteStock() {
   let sub_url = `/products/status/`;
-  let data = yield select(getProductForm);
-  data.status = 2 // DELETE STATUS
+  let product = yield select(getProductState);
+  let data = {
+    'list': product.scanned_stock_list,
+    'status': 2
+  };
 
   try {
     const response = yield call(postRequest, sub_url, data);
     if (response.status === 200) {
-      yield put(successDeleteStock(`제품명: ${data.name}\n재고가 성공적으로 사용되었습니다`));
-    }
-    else if (response.status === 204 || response.status === 404) {
-      yield put(successDeleteStock(`해당 바코드 정보의 재고가 존재하지 않습니다.`));
+      if (response.data.error_message) {
+        yield put(successDeleteStock(response.data.error_message));
+      }
+      else {
+        yield put(successDeleteStock(`재고가 성공적으로 사용되었습니다`));
+      }
     }
   } catch (error) {
     console.log('error:' + error);
@@ -135,18 +141,23 @@ function* requestDeleteStockByID(action) {
 }
 
 function* requestReturnStock() {
-  console.log()
   let sub_url = `/products/status/`;
-  let data = yield select(getProductForm);
-  data.status = 3 // RETURN STATUS
+  let product = yield select(getProductState);
+  let data = {
+    'list': product.scanned_stock_list,
+    'status': 3,
+  }
 
   try {
     const response = yield call(postRequest, sub_url, data);
+    console.log(response)
     if (response.status === 200) {
-      yield put(successDeleteStock(`제품명: ${data.name}\n재고가 성공적으로 반품 처리 되었습니다`));
-    }
-    else if (response.status === 204 || response.status === 404) {
-      yield put(successDeleteStock(`해당 바코드 정보의 재고가 존재하지 않습니다.`));
+      if (response.data.error_message) {
+        yield put(successReturnStock(response.data.error_message));
+      }
+      else {
+        yield put(successReturnStock(`재고가 성공적으로 반품되었습니다`));
+      }
     }
   } catch (error) {
     console.log('error:' + error);

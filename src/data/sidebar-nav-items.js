@@ -23,12 +23,12 @@ export default function() {
     },
     {
       title: "제품 목록",
-      htmlBefore: '<i class="material-icons">local_shipping</i>',
+      htmlBefore: '<i class="material-icons">list</i>',
       to: "/product",
     },
     {
       title: "제조사 목록",
-      htmlBefore: '<i class="material-icons">local_shipping</i>',
+      htmlBefore: '<i class="material-icons">business</i>',
       to: "/manufacturer",
     },
     // {
