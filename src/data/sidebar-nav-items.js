@@ -17,6 +17,11 @@ export default function() {
       to: "/stock/use",
     },
     {
+      title: "재고 반품",
+      htmlBefore: '<i class="material-icons">cached</i>',
+      to: "/stock/return",
+    },
+    {
       title: "제품 목록",
       htmlBefore: '<i class="material-icons">local_shipping</i>',
       to: "/product",

@@ -20,7 +20,7 @@ import CodeParser from '../data/CodeParser';
 
 import { requestGetManufacturerList, requestGetProductInfoList, requestDeleteStock, resetSuccessState } from '../redux/modules/product';
 
-class AddStockForm extends Component {
+class UseStockForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -174,9 +174,9 @@ let mapDispatchToProps = (dispatch) => {
   };
 };
 
-AddStockForm= reduxForm({
+UseStockForm= reduxForm({
   form: 'product'
-})(AddStockForm)
+})(UseStockForm)
 
-AddStockForm = connect(mapStateToProps, mapDispatchToProps)(AddStockForm);
-export default AddStockForm;
+UseStockForm = connect(mapStateToProps, mapDispatchToProps)(UseStockForm);
+export default UseStockForm;

@@ -20,6 +20,8 @@ const REQUEST_POST_STOCK = 'product/REQUEST_POST_STOCK';
 const SUCCESS_POST_STOCK = 'product/SUCCESS_POST_STOCK';
 const REQUEST_DELETE_STOCK = 'product/REQUEST_DELETE_STOCK';
 const SUCCESS_DELETE_STOCK = 'product/SUCCESS_DELETE_STOCK';
+const REQUEST_RETURN_STOCK = 'product/REQUEST_RETURN_STOCK';
+const SUCCESS_RETURN_STOCK = 'product/REQUEST_RETURN_STOCK';
 
 const REQUEST_STOCK_LIST = 'product/REQUEST_STOCK_LIST';
 const SUCCESS_STOCK_LIST = 'product/SUCCESS_STOCK_LIST';
@@ -70,6 +72,8 @@ export const requestPostStock = createAction(REQUEST_POST_STOCK);
 export const successPostStock = createAction(SUCCESS_POST_STOCK);
 export const requestDeleteStock = createAction(REQUEST_DELETE_STOCK);
 export const successDeleteStock = createAction(SUCCESS_DELETE_STOCK);
+export const requestReturnStock = createAction(REQUEST_RETURN_STOCK);
+export const successReturnStock = createAction(SUCCESS_RETURN_STOCK);
 
 export const requestStockList = createAction(REQUEST_STOCK_LIST);
 export const successStockList = createAction(SUCCESS_STOCK_LIST);
@@ -200,6 +204,7 @@ export default handleActions({
     SUCCESS_POST_PRODUCT_INFO,
     SUCCESS_DELETE_STOCK,
     SUCCESS_DELETE_STOCK_BY_ID,
+    SUCCESS_RETURN_STOCK,
     SUCCESS_DELETE_PRODUCT_INFO,
     SUCCESS_CHANGE_PRODUCT_INFO)]: (state, action) => {
     return {

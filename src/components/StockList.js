@@ -41,6 +41,9 @@ class StockList extends Component {
                     제품명
                   </th>
                   <th scope="col" className="border-0">
+                    입력 시간
+                  </th>
+                  <th scope="col" className="border-0">
                     제조사
                   </th>
                   <th scope="col" className="border-0">
@@ -82,6 +85,7 @@ class TableRow extends Component {
       <tr>
         <td>{index+1}</td>
         <td>{data.name}</td>
+        <td>{data.created_time}</td>
         <td>{data.manufacturer_name}</td>
         <td>{data.expiry_start}</td>
         <td>{data.expiry_end}</td>

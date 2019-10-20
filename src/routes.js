@@ -8,6 +8,7 @@ import { DefaultLayout } from "./layouts";
 import BlogOverviewPage from "./views/BlogOverviewPage";
 import AddStock from "./views/AddStock";
 import UseStock from "./views/UseStock";
+import ReturnStock from "./views/ReturnStock";
 import ProductListPage from "./views/ProductListPage";
 import ProductDetailPage from "./views/ProductDetailPage";
 import ManufacturerListPage from "./views/ManufacturerListPage";
@@ -39,6 +40,11 @@ export default [
     path: "/stock/use",
     layout: DefaultLayout,
     component: UseStock
+  },
+  {
+    path: "/stock/return",
+    layout: DefaultLayout,
+    component: ReturnStock
   },
   {
     path: `/stock_list/:id`,
