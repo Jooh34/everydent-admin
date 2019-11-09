@@ -62,6 +62,10 @@ class UseStockForm extends Component {
   }
 
   handleSubmit = (e) => {
+    if (this.props.product.scanned_stock_list.length === 0) {
+      window.alert("입력한 제품이 없습니다.");
+      return;
+    }
     this.props.requestDeleteStock();
   }
 
