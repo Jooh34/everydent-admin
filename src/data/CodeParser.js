@@ -13,7 +13,7 @@ export default function(code, product_list, manufacturer_list) {
 
       switch (contour) {
         case '10':
-          if (manufacturer_code === '07630031') {//티타늄
+          if (manufacturer_code === '07630031') {//스트라우만
             cur = cur + 5;
           }
           else { // 메가젠
@@ -40,8 +40,8 @@ export default function(code, product_list, manufacturer_list) {
     }
   }
   if (code.length === 13) { // 오스템 1D
-    manufacturer_code = code.substring(3, 7);
-    product_code = code.substring(7, 12);
+    manufacturer_code = code.substring(0, 3);
+    product_code = code.substring(3, 8);
   }
 
   if (code.length === 19) { // 원큐 1D
