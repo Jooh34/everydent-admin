@@ -21,7 +21,7 @@ class ExpiryList extends Component {
       <div>
         <Card small className="mb-4">
           <CardHeader className="border-bottom">
-            유통 기한 1년 이내 만료 목록
+            유통 기한 100일 이내 만료 목록
           </CardHeader>
           <CardBody className="p-0 pb-3">
             <table className="table mb-0">

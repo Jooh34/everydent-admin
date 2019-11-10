@@ -63,7 +63,7 @@ class TableRow extends Component {
         <td>{index+1}</td>
         <td>{data.name}</td>
         <td>{data.manufacturer_name}</td>
-        <td>{data.product_count}</td>
+        <td>{data.product_total_count}</td>
       </tr>
     );
   }

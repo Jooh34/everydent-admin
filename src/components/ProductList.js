@@ -163,6 +163,7 @@ class ProductList extends Component {
 class TableRow extends Component {
   render() {
     const { index, data, handleDeleteButtonClick } = this.props;
+    console.log(data)
     return(
       <tr>
         <td>{index+1}</td>
@@ -173,12 +174,12 @@ class TableRow extends Component {
         <td>{data.manufacturer_name}</td>
         <td>
         {
-          (data.product_count) ?
-          <Link to={`/stock_list/${data.id}/`}>{data.product_count}</Link> :
-          data.product_count
+          (data.product_total_count) ?
+          <Link to={`/stock_list/${data.id}/`}>{data.product_total_count}</Link> :
+          data.product_total_count
         }
         </td>
-        <td>{data.returned_count}</td>
+        <td>{data.returned_total_count}</td>
         <td>
           <Button onClick={() => {
               handleDeleteButtonClick(data);
