@@ -131,7 +131,9 @@ class UseStockForm extends Component {
           </CardBody>
         </Card>
         <Button theme='danger' style={btnStyle} onClick={this.handleSubmit}>사용</Button>
-        <Button theme='danger' onClick={() => this.handleScan('010880638822090810190307A0671-01111903071724030621199240IF4510C-01')}>Don't Click this button (this is for test)</Button>
+        {/*<Button theme='danger' onClick={() => this.handleScan('010880638822090810190307A0671-01111903071724030621199240IF4510C-01')}>
+          Don't Click this button (this is for test)
+        </Button>*/}
       </div>
     )
   }

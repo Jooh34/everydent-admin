@@ -17,7 +17,7 @@ class ManufacturerList extends Component {
       <Card small className="mb-4">
         <CardHeader className="border-bottom">
           <Link to="/manufacturer/add/">
-            <Button> 제조사 추가 </Button>
+            {/*<Button> 제조사 추가 </Button>*/}
           </Link>
         </CardHeader>
         <CardBody className="p-0 pb-3">
