@@ -29,6 +29,7 @@ class AddProductForm extends Component {
 
   componentWillMount() {
     this.props.requestGetManufacturerList();
+    this.props.requestGetProductInfoList();
   }
 
   handleScan = (code) => {

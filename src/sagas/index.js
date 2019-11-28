@@ -187,8 +187,8 @@ function* requestPostProductInfo() {
     yield call(postRequest, sub_url, data);
     yield put(successPostProductInfo(`제품명: ${data.name}\n제품이 성공적으로 추가되었습니다`));
   } catch (error) {
-    console.log('error:' + error);
-    yield put(postFailure(error));
+    console.log('error:' + '식별되지 않는 바코드 번호입니다. 바코드번호를 관리자에게 문의해주세요.');
+    yield put(postFailure('error:' + '식별되지 않는 바코드 번호입니다. 바코드번호를 관리자에게 문의해주세요.'));
   }
 }
 
