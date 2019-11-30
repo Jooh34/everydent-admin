@@ -41,7 +41,7 @@ export default function(code, product_list, manufacturer_list) {
   }
   if (code.length === 13) { // 오스템 1D
     manufacturer_code = 'FTN';
-    product_code = code.substring(3, 8);
+    product_code = code.substring(0, 9);
   }
 
   if (code.length === 19) { // 원큐 1D

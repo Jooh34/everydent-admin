@@ -69,7 +69,6 @@ class AddProductForm extends Component {
       window.alert(this.props.product.message);
       this.props.resetSuccessState();
       window.location.reload();
-      this.props.history.push("/product/")
     }
     return (
       <Col sm="12" md="8">
