@@ -163,7 +163,6 @@ class ProductList extends Component {
 class TableRow extends Component {
   render() {
     const { index, data, handleDeleteButtonClick } = this.props;
-    console.log(data)
     return(
       <tr>
         <td>{index+1}</td>

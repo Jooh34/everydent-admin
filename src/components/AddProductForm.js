@@ -16,7 +16,7 @@ import BarcodeReader from 'react-barcode-reader'
 import { connect } from 'react-redux';
 import { reduxForm, Field } from "redux-form";
 
-import { requestGetManufacturerList, requestGetProductInfoList, requestPostProductInfo, resetSuccessState } from '../redux/modules/product';
+import { requestGetManufacturerList, requestGetOriginalProductInfoList, requestPostProductInfo, resetSuccessState } from '../redux/modules/product';
 import CodeParser from '../data/CodeParser';
 
 class AddProductForm extends Component {
@@ -29,14 +29,14 @@ class AddProductForm extends Component {
 
   componentWillMount() {
     this.props.requestGetManufacturerList();
-    this.props.requestGetProductInfoList();
+    this.props.requestGetOriginalProductInfoList();
   }
 
   handleScan = (code) => {
-    const { product_info_list, manufacturer_list } = this.props.product;
+    const { original_product_info_list, manufacturer_list } = this.props.product;
     console.log(code);
 
-    const data = CodeParser(code, product_info_list, manufacturer_list);
+    const data = CodeParser(code, original_product_info_list, manufacturer_list);
     console.log(data)
     // Error : already registered
     if (data.product_name) {
@@ -69,6 +69,7 @@ class AddProductForm extends Component {
       window.alert(this.props.product.message);
       this.props.resetSuccessState();
       window.location.reload();
+      this.props.history.push("/product/")
     }
     return (
       <Col sm="12" md="8">
@@ -142,7 +143,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
-    requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
+    requestGetOriginalProductInfoList: () => dispatch(requestGetOriginalProductInfoList()),
     requestPostProductInfo: () => dispatch(requestPostProductInfo()),
     resetSuccessState: () => dispatch(resetSuccessState()),
   };
