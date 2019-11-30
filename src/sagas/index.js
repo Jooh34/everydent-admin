@@ -209,7 +209,7 @@ function* requestGetProductInfoList() {
 
 function* requestGetOriginalProductInfoList() {
   let sub_url = `/product_infos/all/`;
-  console.log('/??')
+  
   try {
     const response = yield call(getRequest, sub_url);
     const data = response.data;

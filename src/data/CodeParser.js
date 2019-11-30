@@ -2,7 +2,7 @@ export default function(code, product_list, manufacturer_list) {
   let manufacturer_id, manufacturer_code, manufacturer_name;
   let product_id, product_name, product_code;
   let expiry_start, expiry_end;
-
+  
   if (code.substring(0, 2) === '01') { // QR코드
     manufacturer_code = code.substring(2,10);
     product_code = code.substring(10,16);
@@ -40,7 +40,7 @@ export default function(code, product_list, manufacturer_list) {
     }
   }
   if (code.length === 13) { // 오스템 1D
-    manufacturer_code = 'FTN';
+    manufacturer_code = 'OSSTEM';
     product_code = code.substring(0, 9);
   }
 
