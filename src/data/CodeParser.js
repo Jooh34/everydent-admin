@@ -2,16 +2,24 @@ export default function(code, product_list, manufacturer_list) {
   let manufacturer_id, manufacturer_code, manufacturer_name;
   let product_id, product_name, product_code;
   let expiry_start, expiry_end;
-  
+
   if (code.substring(0, 2) === '01') { // QR코드
     manufacturer_code = code.substring(2,10);
+    if (manufacturer_code === '08800053') { // another dentis.....
+      manufacturer_code = '08806169'
+    }
     product_code = code.substring(10,16);
+
     var cur = 16;
     while(cur < code.length) {
       var contour = code.substring(cur, cur+2);
       cur = cur+2;
 
       switch (contour) {
+        case '01':
+          cur = cur - 1;
+          break;
+
         case '10':
           if (manufacturer_code === '07630031') {//스트라우만
             cur = cur + 5;
