@@ -40,7 +40,7 @@ export default function(code, product_list, manufacturer_list) {
     }
   }
   if (code.length === 13) { // 오스템 1D
-    manufacturer_code = code.substring(0, 3);
+    manufacturer_code = 'FTN';
     product_code = code.substring(3, 8);
   }
 
