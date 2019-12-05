@@ -136,6 +136,9 @@ class ProductList extends Component {
                   재고 개수
                 </th>
                 <th scope="col" className="border-0">
+                  사용 개수
+                </th>
+                <th scope="col" className="border-0">
                   반품 개수
                 </th>
                 <th scope="col" className="border-0">
@@ -180,6 +183,7 @@ class TableRow extends Component {
         }
         </td>
         <td>{data.returned_total_count}</td>
+        <td>{data.used_total_count}</td>
         <td>
           <Button onClick={() => {
               handleDeleteButtonClick(data);
