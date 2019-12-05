@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 
 import CodeParser from '../data/CodeParser';
 
-import { requestGetManufacturerList, requestGetProductInfoList,
+import { requestGetManufacturerList, requestGetOriginalProductInfoList,
   resetScannedStockList, addScannedStock,
   requestPostStock, resetSuccessState } from '../redux/modules/product';
 
@@ -27,13 +27,13 @@ class AddStockForm extends Component {
 
   componentWillMount() {
     this.props.requestGetManufacturerList();
-    this.props.requestGetProductInfoList();
+    this.props.requestGetOriginalProductInfoList();
     this.props.resetScannedStockList();
   }
 
   handleScan = (code) => {
-    const { product_info_list, manufacturer_list } = this.props.product;
-    const data = CodeParser(code, product_info_list, manufacturer_list);
+    const { original_product_info_list, manufacturer_list } = this.props.product;
+    const data = CodeParser(code, original_product_info_list, manufacturer_list);
 
     // ERROR : not registed
     if (data.product_code === undefined || data.product_name === undefined) {
@@ -70,7 +70,7 @@ class AddStockForm extends Component {
       window.location.reload();
     }
     //Loading
-    if (this.props.product.product_info_list.length === 0) {
+    if (this.props.product.original_product_info_list.length === 0) {
       return (
         <div>Loading....</div>
       )
@@ -157,7 +157,7 @@ let mapStateToProps = (state) => {
 let mapDispatchToProps = (dispatch) => {
   return {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
-    requestGetProductInfoList: () => dispatch(requestGetProductInfoList()),
+    requestGetOriginalProductInfoList: () => dispatch(requestGetOriginalProductInfoList()),
     resetScannedStockList: () => dispatch(resetScannedStockList()),
     addScannedStock: (payload) => dispatch(addScannedStock(payload)),
     requestPostStock: () => dispatch(requestPostStock()),

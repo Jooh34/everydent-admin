@@ -8,6 +8,7 @@ import {
   successStockList,
   successDeleteStockByID,
   successGetProductInfoList,
+  successGetOriginalProductInfoList,
   successPostProductInfo,
   successDeleteProductInfo,
   successGetProductInfo,
@@ -206,6 +207,20 @@ function* requestGetProductInfoList() {
   }
 }
 
+function* requestGetOriginalProductInfoList() {
+  let sub_url = `/product_infos/all/`;
+  
+  try {
+    const response = yield call(getRequest, sub_url);
+    const data = response.data;
+
+    yield put(successGetOriginalProductInfoList(data));
+  } catch (error) {
+    console.log('error:' + error);
+    yield put(postFailure(error));
+  }
+}
+
 function* requestDeleteProductInfo(action) {
   let sub_url = `/product_infos/${action.payload}/`;
 
@@ -285,8 +300,10 @@ function* rootSaga() {
 
   yield takeEvery('product/REQUEST_POST_PRODUCT_INFO', requestPostProductInfo);
   yield takeEvery('product/REQUEST_GET_PRODUCT_INFO_LIST', requestGetProductInfoList);
+  yield takeEvery('product/REQUEST_GET_ORIGINAL_PRODUCT_INFO_LIST', requestGetOriginalProductInfoList);
   yield takeEvery('product/REQUEST_DELETE_PRODUCT_INFO', requestDeleteProductInfo);
   yield takeEvery('product/REQUEST_GET_PRODUCT_INFO', requestGetProductInfo);
+
   yield takeEvery('product/REQUEST_CHANGE_PRODUCT_INFO', requestChangeProductInfo);
 
   yield takeEvery('product/REQUEST_POST_MANUFACTURER', requestPostManufacturer);
