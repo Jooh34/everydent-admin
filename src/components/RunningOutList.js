@@ -21,7 +21,7 @@ class RunningOutList extends Component {
       <div>
         <Card small className="mb-4">
           <CardHeader className="border-bottom">
-            재고 5개 이하 목록
+            재고 부족 목록
           </CardHeader>
           <CardBody className="p-0 pb-3">
             <table className="table mb-0">
@@ -38,6 +38,9 @@ class RunningOutList extends Component {
                   </th>
                   <th scope="col" className="border-0">
                     개수
+                  </th>
+                  <th scope="col" className="border-0">
+                    최소 보유 개수
                   </th>
                 </tr>
               </thead>
@@ -64,6 +67,7 @@ class TableRow extends Component {
         <td>{data.name}</td>
         <td>{data.manufacturer_name}</td>
         <td>{data.product_total_count}</td>
+        <td>{data.product_min_stock}</td>
       </tr>
     );
   }

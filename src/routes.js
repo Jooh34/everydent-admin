@@ -11,6 +11,7 @@ import UseStock from "./views/UseStock";
 import ReturnStock from "./views/ReturnStock";
 import ProductListPage from "./views/ProductListPage";
 import ProductDetailPage from "./views/ProductDetailPage";
+import ProductMinCountPage from "./views/ProductMinCountPage";
 import ManufacturerListPage from "./views/ManufacturerListPage";
 
 import AddProductPage from "./views/AddProductPage";
@@ -57,6 +58,11 @@ export default [
     exact: true,
     layout: DefaultLayout,
     component: ProductListPage
+  },
+  {
+    path: "/product/min_count",
+    layout: DefaultLayout,
+    component: ProductMinCountPage
   },
   {
     path: "/product/add",

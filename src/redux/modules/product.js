@@ -36,6 +36,8 @@ const SUCCESS_DELETE_PRODUCT_INFO = 'product/SUCCESS_DELETE_PRODUCT_INFO';
 const REQUEST_GET_PRODUCT_INFO_LIST = 'product/REQUEST_GET_PRODUCT_INFO_LIST';
 const SUCCESS_GET_PRODUCT_INFO_LIST = 'product/SUCCESS_GET_PRODUCT_INFO_LIST';
 
+const SUCCESS_SET_MIN_STOCK = 'product/SUCCESS_SET_MIN_STOCK';
+
 // original product_info
 const REQUEST_GET_ORIGINAL_PRODUCT_INFO_LIST = 'product/REQUEST_GET_ORIGINAL_PRODUCT_INFO_LIST';
 const SUCCESS_GET_ORIGINAL_PRODUCT_INFO_LIST = 'product/SUCCESS_GET_ORIGINAL_PRODUCT_INFO_LIST';
@@ -91,6 +93,8 @@ export const requestDeleteProductInfo = createAction(REQUEST_DELETE_PRODUCT_INFO
 export const successDeleteProductInfo = createAction(SUCCESS_DELETE_PRODUCT_INFO);
 export const requestGetProductInfoList = createAction(REQUEST_GET_PRODUCT_INFO_LIST);
 export const successGetProductInfoList = createAction(SUCCESS_GET_PRODUCT_INFO_LIST);
+
+export const successSetMinStock = createAction(SUCCESS_SET_MIN_STOCK);
 
 //original
 export const requestGetOriginalProductInfoList = createAction(REQUEST_GET_ORIGINAL_PRODUCT_INFO_LIST);
@@ -222,7 +226,8 @@ export default handleActions({
     SUCCESS_DELETE_STOCK_BY_ID,
     SUCCESS_RETURN_STOCK,
     SUCCESS_DELETE_PRODUCT_INFO,
-    SUCCESS_CHANGE_PRODUCT_INFO)]: (state, action) => {
+    SUCCESS_CHANGE_PRODUCT_INFO,
+    SUCCESS_SET_MIN_STOCK)]: (state, action) => {
     return {
       ...state,
       is_post_success: true,

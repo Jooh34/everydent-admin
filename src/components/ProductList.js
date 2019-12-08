@@ -2,9 +2,10 @@ import { Component } from "react";
 import React from "react";
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { Button, Card, CardHeader, CardBody, Col,
-InputGroupText, FormInput, FormSelect,
+InputGroupText, FormInput, FormSelect, FormCheckbox,
 InputGroup,
 InputGroupAddon, } from "shards-react";
 
@@ -15,9 +16,33 @@ import {
   resetSuccessState,
 } from "../redux/modules/product";
 
-let btnStyle = {
+import {
+  addCheckedProduct,
+  reassignCheckedProduct,
+} from "../redux/modules/product_list";
+
+let stylePointer = {
+  cursor: 'pointer',
+}
+
+let floatLeft = {
+  float: 'left',
+}
+
+let floatRight = {
   float: 'right',
 }
+
+const MyCheckBox = styled.div`
+  width: 14px;
+  height: 14px;
+  border: 2px solid #007bff;
+  background-color: ${props => props.checked ? '#007bff' : 'white' }
+`
+
+const CountText = styled.div`
+  color : ${props => props.red ? 'red' : 'black' }
+`
 
 class ProductList extends Component {
   constructor(props) {
@@ -31,6 +56,7 @@ class ProductList extends Component {
   componentWillMount() {
     this.props.requestGetProductInfoList();
     this.props.requestGetManufacturerList();
+    this.props.reassignCheckedProduct([])
   }
 
   handleKeywordChange = (e) => {
@@ -40,6 +66,7 @@ class ProductList extends Component {
         keyword: e.target.value,
       }
     )
+    this.props.reassignCheckedProduct([])
   }
 
   handleManufactureSelect = (e) => {
@@ -49,6 +76,7 @@ class ProductList extends Component {
         selected_manufacturer: e.target.value,
       }
     )
+    this.props.reassignCheckedProduct([])
   }
 
   handleDeleteButtonClick = (data) => {
@@ -64,9 +92,24 @@ class ProductList extends Component {
     }
   }
 
+  handleToggleCheckAll = (isCheckedAll, filtered_list) => {
+    if (isCheckedAll) {
+      this.props.reassignCheckedProduct([])
+    }
+    else {
+      const id_list = []
+      for (var el of filtered_list) {
+        id_list.push(el.id)
+      }
+      this.props.reassignCheckedProduct(id_list);
+    }
+  }
+
   render() {
     const { product_info_list, manufacturer_list } = this.props.product;
     const { keyword, selected_manufacturer } = this.state;
+    const { checked_product_list } = this.props;
+
     let filtered_list = product_info_list;
     if (keyword !== '') {
       filtered_list = filtered_list.filter(
@@ -112,15 +155,21 @@ class ProductList extends Component {
               </FormSelect>
             </InputGroup>
           </Col>
+          <Link to="/product/min_count">
+            <Button style={floatLeft}> 최소 개수 수정 </Button>
+          </Link>
           <Link to="/product/add">
-            <Button style={btnStyle}> 제품 추가 </Button>
+            <Button style={floatRight}> 제품 추가 </Button>
           </Link>
         </CardHeader>
-        <CardBody className="p-0 pb-3">
+        <CardBody className="p-0 pb-2">
           <table className="table mb-0">
             <thead className="bg-light">
               <tr>
-                <th scope="col" className="border-0">
+                <th scope="col" className="border-0" style={stylePointer} onClick={() => this.handleToggleCheckAll(checked_product_list.length === filtered_list.length, filtered_list)}>
+                  <MyCheckBox checked={filtered_list.length !== 0 && checked_product_list.length === filtered_list.length}/>
+                </th>
+                <th scope="col" className="border-0" style={stylePointer} onClick={() => this.handleToggleCheckAll(checked_product_list.length === filtered_list.length, filtered_list)}>
                   #
                 </th>
                 <th scope="col" className="border-0">
@@ -142,6 +191,9 @@ class ProductList extends Component {
                   반품 개수
                 </th>
                 <th scope="col" className="border-0">
+                  최소 보유 개수
+                </th>
+                <th scope="col" className="border-0">
                   제품 삭제
                 </th>
               </tr>
@@ -153,6 +205,8 @@ class ProductList extends Component {
                   index={i}
                   data={data}
                   handleDeleteButtonClick={this.handleDeleteButtonClick}
+                  addCheckedProduct={this.props.addCheckedProduct}
+                  checked={checked_product_list.includes(data.id)}
                 />)
               })}
             </tbody>
@@ -165,24 +219,35 @@ class ProductList extends Component {
 
 class TableRow extends Component {
   render() {
-    const { index, data, handleDeleteButtonClick } = this.props;
+    const { index, data, handleDeleteButtonClick, addCheckedProduct, checked } = this.props;
+    console.log(data)
     return(
       <tr>
-        <td>{index+1}</td>
+        <td style={stylePointer} onClick={() => addCheckedProduct(data.id)}>
+          <MyCheckBox checked={checked}/>
+        </td>
+        <td style={stylePointer} onClick={() => addCheckedProduct(data.id)}>
+          {index+1}
+        </td>
         <td>
           <Link to={`/product/change/${data.id}/`}>{data.name}</Link>
         </td>
         <td>{data.code}</td>
         <td>{data.manufacturer_name}</td>
         <td>
-        {
-          (data.product_total_count) ?
-          <Link to={`/stock_list/${data.id}/`}>{data.product_total_count}</Link> :
-          data.product_total_count
-        }
+          <CountText red={ data.product_total_count < data.min_stock }>
+          {
+            (data.product_total_count) ?
+            <Link to={`/stock_list/${data.id}/`}>{data.product_total_count}</Link> :
+            data.product_total_count
+          }
+          </CountText>
         </td>
         <td>{data.returned_total_count}</td>
         <td>{data.used_total_count}</td>
+        <td>
+          {data.min_stock}
+        </td>
         <td>
           <Button onClick={() => {
               handleDeleteButtonClick(data);
@@ -196,6 +261,7 @@ class TableRow extends Component {
 let mapStateToProps = (state) => {
     return {
       product: state.product,
+      checked_product_list: state.product_list.checked_product_list,
     };
 };
 
@@ -205,6 +271,8 @@ let mapDispatchToProps = (dispatch) => {
     requestGetManufacturerList: () => dispatch(requestGetManufacturerList()),
     requestDeleteProductInfo: (id) => dispatch(requestDeleteProductInfo(id)),
     resetSuccessState: () => dispatch(resetSuccessState()),
+    addCheckedProduct: (id) => dispatch(addCheckedProduct(id)),
+    reassignCheckedProduct: (list) => dispatch(reassignCheckedProduct(list)),
   };
 };
 

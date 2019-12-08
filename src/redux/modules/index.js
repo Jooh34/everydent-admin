@@ -7,6 +7,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 
 import auth from './auth';
 import product from './product';
+import product_list from './product_list';
 import rootSaga from '../../sagas';
 
 const sagaMiddleware = createSagaMiddleware();
@@ -14,6 +15,7 @@ const sagaMiddleware = createSagaMiddleware();
 const reducer = combineReducers({
   auth,
   product,
+  product_list,
   form: formReducer
 });
 

@@ -27,7 +27,8 @@
     "redux-saga": "^1.0.5",
     "shards-react": "^1.0.0",
     "shortid": "^2.2.14",
-    "simple-barcode-scanner": "^2.0.0"
+    "simple-barcode-scanner": "^2.0.0",
+    "styled-components": "^4.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

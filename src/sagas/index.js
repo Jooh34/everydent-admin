@@ -17,6 +17,7 @@ import {
   successCountInfo,
   successExpiryList,
   successRunningOutList,
+  successSetMinStock,
   postFailure,
 } from '../redux/modules/product';
 
@@ -209,7 +210,7 @@ function* requestGetProductInfoList() {
 
 function* requestGetOriginalProductInfoList() {
   let sub_url = `/product_infos/all/`;
-  
+
   try {
     const response = yield call(getRequest, sub_url);
     const data = response.data;
@@ -264,6 +265,21 @@ function* requestChangeProductInfo(action) {
   }
 }
 
+function* requestSetMinStock(action) {
+  let sub_url = `/product_infos/min_stock/`;
+  let data = action.payload;
+  console.log(JSON.stringify(data));
+
+  try {
+    yield call(postRequest, sub_url, data);
+
+    yield put(successSetMinStock(`최소 개수 설정이 완료되었습니다.`));
+  } catch (error) {
+    console.log('error:' + error);
+    yield put(postFailure(error));
+  }
+}
+
 function* requestPostManufacturer() {
   let sub_url = `/manufacturers/`;
   let data = yield select(getProductForm);
@@ -305,6 +321,7 @@ function* rootSaga() {
   yield takeEvery('product/REQUEST_GET_PRODUCT_INFO', requestGetProductInfo);
 
   yield takeEvery('product/REQUEST_CHANGE_PRODUCT_INFO', requestChangeProductInfo);
+  yield takeEvery('product_list/REQUEST_SET_MIN_STOCK', requestSetMinStock);
 
   yield takeEvery('product/REQUEST_POST_MANUFACTURER', requestPostManufacturer);
   yield takeEvery('product/REQUEST_GET_MANUFACTURER_LIST', requestGetManufacturerList);
