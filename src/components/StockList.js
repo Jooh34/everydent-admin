@@ -9,12 +9,16 @@ import {
 
 import { connect } from 'react-redux';
 
-import { requestStockList, requestDeleteStockByID, resetSuccessState } from "../redux/modules/product";
+import { requestStockList, requestChangeStockStatus ,resetSuccessState } from "../redux/modules/product";
 
 class StockList extends Component {
   componentWillMount() {
     const { id } = this.props;
-    this.props.requestStockList(id);
+    const payload = {
+      'id' : this.props.id,
+      'status' : parseInt(this.props.query.status),
+    }
+    this.props.requestStockList(payload);
   }
   render() {
     if (this.props.product.is_post_success || this.props.product.is_post_failure) {
@@ -24,7 +28,6 @@ class StockList extends Component {
     }
 
     const { stock_list } = this.props.product;
-    const { usable } = this.props;
     return (
       <div>
         <Card small className="mb-4">
@@ -52,11 +55,24 @@ class StockList extends Component {
                   <th scope="col" className="border-0">
                     유통기한
                   </th>
-                  {usable &&
+                  {this.props.query.status!=1 &&
+                    <th scope="col" className="border-0">
+                      복구
+                    </th>
+                  }
+                  {this.props.query.status!=2 &&
                     <th scope="col" className="border-0">
                       사용
                     </th>
                   }
+                  {this.props.query.status!=3 &&
+                    <th scope="col" className="border-0">
+                      반품
+                    </th>
+                  }
+                  <th scope="col" className="border-0">
+                    현재 상태
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -65,8 +81,8 @@ class StockList extends Component {
                     index={i}
                     key={i}
                     data={expiry}
-                    usable={usable}
-                    requestDeleteStockByID={this.props.requestDeleteStockByID}/>
+                    requestChangeStockStatus={this.props.requestChangeStockStatus}
+                    status={this.props.query.status}/>
                   )
                 })}
               </tbody>
@@ -80,7 +96,17 @@ class StockList extends Component {
 
 class TableRow extends Component {
   render() {
-    const { index, data, usable, requestDeleteStockByID } = this.props;
+    const { index, data, requestChangeStockStatus, status } = this.props;
+    let status_KR;
+    if (status == 1) {
+      status_KR = '보유 중';
+    }
+    else if (status == 2) {
+      status_KR = '사용됨';
+    }
+    else {
+      status_KR = '반품됨';
+    }
     return(
       <tr>
         <td>{index+1}</td>
@@ -89,12 +115,41 @@ class TableRow extends Component {
         <td>{data.manufacturer_name}</td>
         <td>{data.expiry_start}</td>
         <td>{data.expiry_end}</td>
+        {
+        status!=1 &&
         <td>
-        {usable &&
-          <Button theme="danger" onClick={() => requestDeleteStockByID(data.id)}>
+          <Button theme="primary" onClick={() => requestChangeStockStatus({
+              'id': data.id,
+              'status': 1
+            })}>
+            복구
+          </Button>
+        </td>
+        }
+        {
+        status!=2 &&
+        <td>
+          <Button theme="danger" onClick={() => requestChangeStockStatus({
+              'id': data.id,
+              'status': 2
+            })}>
             사용
           </Button>
+        </td>
         }
+        {
+        status!=3 &&
+        <td>
+          <Button theme="warning" onClick={() => requestChangeStockStatus({
+              'id': data.id,
+              'status': 3
+            })}>
+            반품
+          </Button>
+        </td>
+        }
+        <td>
+          {status_KR}
         </td>
       </tr>
     );
@@ -109,8 +164,8 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    requestStockList: (id) => dispatch(requestStockList(id)),
-    requestDeleteStockByID: (id) => dispatch(requestDeleteStockByID(id)),
+    requestStockList: (payload) => dispatch(requestStockList(payload)),
+    requestChangeStockStatus: (payload) => dispatch(requestChangeStockStatus(payload)),
     resetSuccessState: () => dispatch(resetSuccessState()),
   };
 };

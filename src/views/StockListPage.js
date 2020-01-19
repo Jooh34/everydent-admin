@@ -1,6 +1,7 @@
 import { Component } from "react";
 import React from "react";
 import { Container, Row, Col } from "shards-react";
+import queryString from "query-string"
 
 import { withRouter } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ class StockListPage extends Component {
         </Row>
         <Row>
           <Col lg="12" md="12">
-            <StockList id={this.props.match.params.id} usable={true} />
+            <StockList id={this.props.match.params.id} query={queryString.parse(this.props.location.search)}/>
           </Col>
         </Row>
       </Container>

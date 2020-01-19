@@ -220,7 +220,6 @@ class ProductList extends Component {
 class TableRow extends Component {
   render() {
     const { index, data, handleDeleteButtonClick, addCheckedProduct, checked } = this.props;
-    console.log(data)
     return(
       <tr>
         <td style={stylePointer} onClick={() => addCheckedProduct(data.id)}>
@@ -238,13 +237,25 @@ class TableRow extends Component {
           <CountText red={ data.product_total_count < data.min_stock }>
           {
             (data.product_total_count) ?
-            <Link to={`/stock_list/${data.id}/`}>{data.product_total_count}</Link> :
+            <Link to={`/stock_list/${data.id}?status=1`}>{data.product_total_count}</Link> :
             data.product_total_count
           }
           </CountText>
         </td>
-        <td>{data.returned_total_count}</td>
-        <td>{data.used_total_count}</td>
+        <td>
+          {
+            (data.used_total_count) ?
+            <Link to={`/stock_list/${data.id}?status=2`}>{data.used_total_count}</Link> :
+            data.used_total_count
+          }
+        </td>
+        <td>
+          {
+            (data.returned_total_count) ?
+            <Link to={`/stock_list/${data.id}?status=3`}>{data.returned_total_count}</Link> :
+            data.returned_total_count
+          }
+        </td>
         <td>
           {data.min_stock}
         </td>

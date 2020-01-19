@@ -6,7 +6,7 @@ import {
   successDeleteStock,
   successReturnStock,
   successStockList,
-  successDeleteStockByID,
+  successChangeStockStatus,
   successGetProductInfoList,
   successGetOriginalProductInfoList,
   successPostProductInfo,
@@ -123,18 +123,19 @@ function* requestDeleteStock() {
   }
 }
 
-function* requestDeleteStockByID(action) {
-  let sub_url = `/products/status/${action.payload}/`;
-  let data = {};
-  data.status = 2 // DELETE STATUS
+function* requestChangeStockStatus(action) {
+  let sub_url = `/products/status/${action.payload.id}/`;
+  let data = {
+    status: action.payload.status
+  };
 
   try {
     const response = yield call(postRequest, sub_url, data);
     if (response.status === 200) {
-      yield put(successDeleteStockByID(`제품명: ${response.data.name}\n재고가 성공적으로 사용되었습니다`));
+      yield put(successChangeStockStatus(`제품명: ${response.data.name}\n재고가 성공적으로 처리되었습니다.`));
     }
     else if (response.status === 204 || response.status === 404) {
-      yield put(successDeleteStockByID(`해당 정보의 재고가 존재하지 않습니다.`));
+      yield put(successChangeStockStatus(`해당 정보의 재고가 존재하지 않습니다.`));
     }
   } catch (error) {
     console.log('error:' + error);
@@ -168,7 +169,7 @@ function* requestReturnStock() {
 }
 
 function* requestStockList(action) {
-  let sub_url = `/stock_list/${action.payload}/`;
+  let sub_url = `/stock_list/${action.payload.id}?status=${action.payload.status}`;
 
   try {
     const response = yield call(getRequest, sub_url);
@@ -312,7 +313,7 @@ function* rootSaga() {
   yield takeEvery('product/REQUEST_RETURN_STOCK', requestReturnStock);
 
   yield takeEvery('product/REQUEST_STOCK_LIST', requestStockList);
-  yield takeEvery('product/REQUEST_DELETE_STOCK_BY_ID', requestDeleteStockByID);
+  yield takeEvery('product/REQUEST_CHANGE_STOCK_STATUS', requestChangeStockStatus);
 
   yield takeEvery('product/REQUEST_POST_PRODUCT_INFO', requestPostProductInfo);
   yield takeEvery('product/REQUEST_GET_PRODUCT_INFO_LIST', requestGetProductInfoList);
