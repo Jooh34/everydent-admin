@@ -3,6 +3,9 @@ export default function(code, product_list, manufacturer_list) {
   let product_id, product_name, product_code;
   let expiry_start, expiry_end;
 
+  code = code.replace("(", "");
+  code = code.replace(")", "");
+
   if (code.substring(0, 2) === '01') { // QR코드
     manufacturer_code = code.substring(2,10);
     if (manufacturer_code === '08800053') { // another dentis.....
@@ -46,6 +49,14 @@ export default function(code, product_list, manufacturer_list) {
           break;
       }
     }
+  }
+  if (code.substring(0, 3) === '111') { // 디오 옛날 꺼
+    manufacturer_code = 'DIO-OLD'
+    product_code = code.substring(7, 15)
+  }
+  if (code.length === 9) { // 제노스
+    manufacturer_code = code.substring(0, 2);
+    product_code = code.substring(2, 9);
   }
   if (code.length === 13) { // 오스템 1D
     manufacturer_code = 'OSSTEM';
